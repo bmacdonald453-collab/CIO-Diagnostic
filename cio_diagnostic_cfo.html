@@ -2286,7 +2286,7 @@ const COMP_S_LABELS = { ceo:'CEO', cfo:'CFO', chro:'CHRO', board:'Board Member' 
 // ── SUBMISSION ENDPOINT ──────────────────────────────────────────────────────
 // Paste your Google Apps Script Web App URL here after setup.
 // See setup instructions: paste the URL between the quotes below.
-const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycby1BSyolq5aMm7Ys50XLv14KHB5OamwJLFVKDiVEaOy73ebFo0zyrJFoH6ijLitsEdB7Q/exec';
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbydv6eqiSRDICMcYd1t5AxiLompXp1u3kpEn26bj1nQb8SRRfdAW1TlC6MZx1AAUcm-/exec';
 let compStakeholderIdx = 0;
 
 // Flatten all behaviours for iteration
@@ -2560,12 +2560,9 @@ function submitResponses() {
     return;
   }
 
-  const btn = document.getElementById('review-submit-btn');
-  const originalText = btn.textContent;
-  btn.textContent = 'Submitting…';
-  btn.disabled = true;
+  const btn = document.getElementById('comp-submit-btn') || document.getElementById('review-submit-btn');
+  if (btn) { btn.textContent = 'Submitting…'; btn.disabled = true; }
 
-  // Build the payload
   const stakeholderRole = STAKEHOLDERS[0]?.role || 'Unknown';
   const stakeholderId   = STAKEHOLDERS[0]?.id   || 'unknown';
 
@@ -2574,20 +2571,15 @@ function submitResponses() {
     const cIdx = currentSit[q.id];
     const tIdx = targetSit[q.id];
     return {
-      id:           q.id,
-      dimension:    q.dimension || '',
-      question:     q.text,
-      current_idx:  cIdx !== undefined ? cIdx : null,
-      current_text: cIdx !== undefined && opts[cIdx] ? opts[cIdx].text : null,
-      current_stage:cIdx !== undefined && opts[cIdx] ? opts[cIdx].stage : null,
-      target_idx:   tIdx !== undefined ? tIdx : null,
-      target_text:  tIdx !== undefined && opts[tIdx] ? opts[tIdx].text : null,
-      target_stage: tIdx !== undefined && opts[tIdx] ? opts[tIdx].stage : null,
-      note:         notes[q.id] || null,
+      id: q.id, dimension: q.dimension || '', question: q.text,
+      current_text:  cIdx !== undefined && opts[cIdx] ? opts[cIdx].text  : null,
+      current_stage: cIdx !== undefined && opts[cIdx] ? opts[cIdx].stage : null,
+      target_text:   tIdx !== undefined && opts[tIdx] ? opts[tIdx].text  : null,
+      target_stage:  tIdx !== undefined && opts[tIdx] ? opts[tIdx].stage : null,
+      note: notes[q.id] || null,
     };
   }));
 
-  // Include competency ratings from Part 2
   const competencyRatings = [];
   COMPETENCIES.forEach(g => {
     g.behaviours.forEach(b => {
@@ -2596,12 +2588,8 @@ function submitResponses() {
         if (rating) {
           const LEVEL_LABELS = ['','Competent','Strong','Exceptional'];
           competencyRatings.push({
-            competency_group: g.group,
-            behaviour_id:     b.id,
-            behaviour_name:   b.name,
-            stakeholder:      sid,
-            rating_level:     rating,
-            rating_label:     LEVEL_LABELS[rating] || '',
+            competency_group: g.group, behaviour_id: b.id, behaviour_name: b.name,
+            stakeholder: sid, rating_level: rating, rating_label: LEVEL_LABELS[rating] || '',
           });
         }
       });
@@ -2609,28 +2597,37 @@ function submitResponses() {
   });
 
   const payload = {
-    stakeholder_id:     stakeholderId,
-    stakeholder_role:   stakeholderRole,
-    submitted_at:       new Date().toISOString(),
-    responses,
-    competency_ratings: competencyRatings,
+    stakeholder_id: stakeholderId, stakeholder_role: stakeholderRole,
+    submitted_at: new Date().toISOString(), responses, competency_ratings: competencyRatings,
   };
 
-  fetch(SUBMIT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  .then(() => {
-    closeReview();
+  // Use a hidden iframe form POST to avoid CORS issues with Google Apps Script
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SUBMIT_URL;
+  form.target = 'submit-iframe';
+  form.style.display = 'none';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payload);
+  form.appendChild(input);
+
+  const iframe = document.createElement('iframe');
+  iframe.name = 'submit-iframe';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+  document.body.appendChild(form);
+
+  iframe.onload = () => {
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+    closeReview && closeReview();
     showScreen('thankyou');
-  })
-  .catch(() => {
-    // no-cors means we can't read the response — treat as success
-    closeReview();
-    showScreen('thankyou');
-  });
+  };
+
+  form.submit();
 }
 
 function closeReview() {
