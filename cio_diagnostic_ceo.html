@@ -943,6 +943,7 @@ details[open] .comp-examples-toggle::before{ transform:rotate(90deg); }
       <button class="btn-primary" onclick="showJD()">Begin Part 3 — Build Job Description →</button>
       <button class="btn-secondary" onclick="buildAndShow('summary')">← Part 1 Results</button>
       <button class="btn-ghost" onclick="startCompRating()">↺ Re-rate Competencies</button>
+      <button class="btn-primary" id="comp-submit-btn" style="display:none;background:#0C2340;" onclick="submitResponses()">✓ Submit all responses →</button>
     </div>
   </div>
 </div>
@@ -2285,7 +2286,7 @@ const COMP_S_LABELS = { ceo:'CEO', cfo:'CFO', chro:'CHRO', board:'Board Member' 
 // ── SUBMISSION ENDPOINT ──────────────────────────────────────────────────────
 // Paste your Google Apps Script Web App URL here after setup.
 // See setup instructions: paste the URL between the quotes below.
-const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbz88qVlH-Twa1sj9aF53n8mneL08_icQSii4eBcHPLVafHvJUfb7rdXV5OzSfQw73uJlA/exec';
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycby1BSyolq5aMm7Ys50XLv14KHB5OamwJLFVKDiVEaOy73ebFo0zyrJFoH6ijLitsEdB7Q/exec';
 let compStakeholderIdx = 0;
 
 // Flatten all behaviours for iteration
@@ -2459,6 +2460,12 @@ function buildCompResults() {
   });
   html += '</div>';
   document.getElementById('compResultsGrid').innerHTML = html;
+  // Show submit button on comp results if URL configured
+  const compSubmitBtn = document.getElementById('comp-submit-btn');
+  if (compSubmitBtn) compSubmitBtn.style.display = SUBMIT_URL ? 'inline-flex' : 'none';
+  // Hide the review overlay submit button since we now submit after Part 2
+  const reviewSubmitBtn = document.getElementById('review-submit-btn');
+  if (reviewSubmitBtn) reviewSubmitBtn.style.display = 'none';
   showScreen('comp-results');
 }
 
@@ -2587,11 +2594,33 @@ function submitResponses() {
     };
   }));
 
+  // Include competency ratings from Part 2
+  const competencyRatings = [];
+  COMPETENCIES.forEach(g => {
+    g.behaviours.forEach(b => {
+      COMP_STAKEHOLDERS.forEach(sid => {
+        const rating = compRatings[sid]?.[b.id];
+        if (rating) {
+          const LEVEL_LABELS = ['','Competent','Strong','Exceptional'];
+          competencyRatings.push({
+            competency_group: g.group,
+            behaviour_id:     b.id,
+            behaviour_name:   b.name,
+            stakeholder:      sid,
+            rating_level:     rating,
+            rating_label:     LEVEL_LABELS[rating] || '',
+          });
+        }
+      });
+    });
+  });
+
   const payload = {
-    stakeholder_id:   stakeholderId,
-    stakeholder_role: stakeholderRole,
-    submitted_at:     new Date().toISOString(),
+    stakeholder_id:     stakeholderId,
+    stakeholder_role:   stakeholderRole,
+    submitted_at:       new Date().toISOString(),
     responses,
+    competency_ratings: competencyRatings,
   };
 
   fetch(SUBMIT_URL, {
