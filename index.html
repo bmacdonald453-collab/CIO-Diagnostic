@@ -5231,5 +5231,112 @@ document.addEventListener('click', function(e){
   };
 })();
 </script>
+
+
+<style id="mobile-responsive-overrides">
+/* Mobile friendly presentation layer: keeps the deck intact, but converts each slide into a scrollable, stacked view on narrow screens. */
+@media (max-width: 820px), (max-height: 520px) and (orientation: landscape) {
+  html, body { width:100%; height:100%; overflow:hidden!important; background:#081628!important; }
+  .player { width:100vw!important; height:100dvh!important; overflow:hidden!important; }
+  .brand-bar { height:44px!important; padding:0 16px!important; background:rgba(8,22,40,.88)!important; backdrop-filter:blur(10px)!important; }
+  .bn { font-size:9px!important; letter-spacing:.18em!important; }
+  .slbl { display:none!important; }
+  .brand-bar > div:last-child { font-size:9px!important; }
+
+  .slide { inset:0!important; width:100vw!important; height:100dvh!important; overflow-y:auto!important; overflow-x:hidden!important; -webkit-overflow-scrolling:touch!important; align-items:flex-start!important; justify-content:flex-start!important; }
+  .slide.active { opacity:1!important; pointer-events:auto!important; }
+  .slide:not(.active):not(.entering) { pointer-events:none!important; }
+  .glow, .glow2 { opacity:.55!important; }
+  .re, .rc, .rs, .rh, .rb, .rp, .rcard, .re.on, .rc.on, .rs.on, .rh.on, .rb.on, .rp.on, .rcard.on { opacity:1!important; transform:none!important; animation:none!important; }
+
+  .s, .team-overview-wrap, .team-bio-wrap {
+    width:100%!important; height:auto!important; min-height:100dvh!important;
+    padding:64px 18px 96px!important; align-items:flex-start!important; justify-content:flex-start!important;
+    gap:18px!important; overflow:visible!important; box-sizing:border-box!important;
+  }
+  .s[style*="flex-direction:row"], .srow, .two-col, .framework-intro { flex-direction:column!important; display:flex!important; }
+  .s > div, .s > section { max-width:100%!important; width:100%!important; flex:0 0 auto!important; }
+  .s > div[style*="position:absolute"] { position:relative!important; }
+  .s br { display:none!important; }
+
+  .title, .section-title, .section-title-light, .ch-word, .cover-title,
+  .team-title-link, h1, h2 {
+    font-size:clamp(32px, 11vw, 46px)!important; line-height:1.08!important; letter-spacing:-.025em!important;
+  }
+  .body, .body.dk, .section-body-light, .cover-subtitle, p,
+  .team-sub-link, .ch-sub { font-size:14px!important; line-height:1.62!important; max-width:100%!important; }
+  .eyebrow, .eyebrow-l, .section-eyebrow, .section-eyebrow-light,
+  .team-eyebrow-link { font-size:10px!important; letter-spacing:.18em!important; margin-bottom:10px!important; }
+
+  .stat-grid, .forces, .nuance, .pillars, .comp-grid, .competency-grid,
+  .problem-stat-grid, .three-col, .oc-grid, .sh-grid, .mock-sh-grid, .mock-tool-row,
+  .framework-pillars, .team-grid-link, .team-grid-fit,
+  .s div[style*="display:grid"], .s section[style*="display:grid"] {
+    display:grid!important; grid-template-columns:1fr!important; grid-template-rows:auto!important; gap:12px!important; width:100%!important;
+  }
+  .stat-box, .force, .ncard, .pillar, .oc, .problem-stat,
+  .rcard, .sh-card, .mock-sh-card, .mock-tool-card {
+    padding:16px!important; min-height:auto!important; border-radius:10px!important;
+  }
+  .stat-n, .problem-stat-num, .ch-bg { font-size:clamp(50px,18vw,84px)!important; }
+
+  .proc, .process-timeline { width:100%!important; max-width:100%!important; }
+  .proc-step, .process-step { gap:14px!important; padding-bottom:20px!important; }
+  .proc-dot, .process-step-marker { width:38px!important; height:38px!important; }
+
+  .portal, .portal-chrome, .diag, .bq, .sa { width:100%!important; max-width:100%!important; overflow:hidden!important; }
+  .pt-body, .diag-body, .portal-body { height:auto!important; flex-direction:column!important; display:flex!important; }
+  .pt-sidebar, .portal-sidebar, .diag-r { width:100%!important; border-right:0!important; border-bottom:1px solid rgba(255,255,255,.08)!important; }
+  .pt-main, .portal-main, .diag-l { width:100%!important; padding:0!important; }
+  .pt-mbody, .portal-content { padding:14px!important; }
+  .diag-body { height:auto!important; }
+  .diag-r { min-height:220px!important; }
+
+  /* Team overview on mobile */
+  #s3 .team-overview-wrap { padding-top:66px!important; text-align:left!important; }
+  #s3 .team-title-link { margin-bottom:8px!important; }
+  #s3 .team-sub-link { text-align:left!important; margin-bottom:18px!important; }
+  #s3 .team-grid-link, #s3 .team-grid-fit { grid-template-columns:1fr!important; gap:12px!important; }
+  #s3 .team-card-link, #s3 .team-card-fit, #s3 .team-card-founder-link.team-card-fit {
+    min-height:auto!important; display:grid!important; grid-template-columns:52px minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important; align-items:center!important; gap:10px 14px!important;
+    padding:15px!important; grid-column:auto!important; grid-row:auto!important;
+  }
+  #s3 .team-card-link .team-avatar-link, #s3 .team-card-founder-link.team-card-fit .team-avatar-link {
+    width:52px!important; height:52px!important; font-size:15px!important; margin:0!important; grid-row:1 / span 2!important;
+  }
+  #s3 .team-text-link { grid-column:2!important; min-width:0!important; }
+  #s3 .team-name-link, #s3 .team-card-founder-link.team-card-fit .team-name-link { font-size:24px!important; line-height:1.08!important; }
+  #s3 .team-job-link, #s3 .team-card-founder-link.team-card-fit .team-job-link { font-size:11px!important; line-height:1.42!important; }
+  #s3 .team-link-cta { grid-column:2!important; margin-top:2px!important; font-size:9px!important; }
+  #s3 .team-hint-link { font-size:9px!important; margin-top:12px!important; }
+
+  /* Team bio slides on mobile */
+  .team-bio-wrap { align-items:flex-start!important; padding-top:62px!important; }
+  .team-bio-card { width:100%!important; min-height:auto!important; grid-template-columns:1fr!important; border-radius:16px!important; }
+  .team-bio-side { border-right:0!important; border-bottom:1px solid rgba(255,255,255,.08)!important; padding:24px 20px!important; }
+  .team-bio-avatar { width:64px!important; height:64px!important; font-size:18px!important; margin-bottom:16px!important; }
+  .team-bio-name { font-size:30px!important; }
+  .team-bio-job { font-size:12px!important; line-height:1.5!important; }
+  .team-bio-main { padding:24px 20px 26px!important; justify-content:flex-start!important; }
+  .team-bio-copy { font-size:15px!important; line-height:1.62!important; margin-bottom:20px!important; }
+  .team-bio-creds { grid-template-columns:1fr!important; gap:8px!important; }
+  .team-bio-creds div { font-size:12px!important; padding:12px!important; }
+  .team-back-link { position:fixed!important; top:52px!important; left:14px!important; display:inline-flex!important; margin:0!important; z-index:100000!important; box-shadow:0 8px 24px rgba(0,0,0,.28)!important; }
+
+  .controls { height:54px!important; padding:8px 12px 10px!important; gap:10px!important; background:linear-gradient(transparent,rgba(8,22,40,.96) 35%)!important; }
+  .cbtn { width:34px!important; height:34px!important; padding:6px!important; }
+  .sinfo { font-size:10px!important; min-width:44px!important; text-align:center!important; }
+  .mbtn { width:30px!important; height:30px!important; }
+  #section-progress, .section-progress { display:none!important; }
+}
+
+@media (max-width: 820px) and (orientation: landscape) {
+  .s, .team-overview-wrap, .team-bio-wrap { padding-top:54px!important; padding-bottom:70px!important; }
+  .title, .section-title, .section-title-light, .ch-word, .cover-title, .team-title-link, h1, h2 { font-size:clamp(28px, 6vw, 40px)!important; }
+  #s3 .team-grid-link { grid-template-columns:1fr 1fr!important; }
+  #s3 .team-card-link, #s3 .team-card-fit, #s3 .team-card-founder-link.team-card-fit { grid-template-columns:46px 1fr!important; padding:12px!important; }
+}
+</style>
 </body>
 </html>
