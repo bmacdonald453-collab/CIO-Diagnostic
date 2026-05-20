@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0081)file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html -->
+<!-- saved from url=(0081)file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta content="width=device-width,initial-scale=1.0" name="viewport">
@@ -2872,16 +2872,77 @@ html,body{background:radial-gradient(circle at top left, #112545 0%, #081628 38%
   line-height: 1.02 !important;
 }
 
+
+/* Global typography increase +15% */
+:root{
+  --wc-kicker: 11.5px;
+  --wc-panel-title: clamp(15px,1.78vw,25px);
+  --wc-panel-body: 15px;
+  --wc-card-title: 17px;
+  --wc-card-body: 12.5px;
+  --wc-card-meta: 11.5px;
+  --wc-transition-title: clamp(39px,5.06vw,69px);
+}
+/* Keep early reference slides proportional but 15% larger */
+#s0 .slick-left .slick-h1,
+#s0 .slick-right .slick-copy.big,
+#s1 .slick-left .slick-h1,
+#s1 .slick-right .slick-copy.big,
+#s2 .slick-left .slick-h1,
+#s2 .slick-right .slick-copy.big,
+#s3 .slick-left .slick-h1,
+#s4 .slick-left .slick-h1,
+#s4 .slick-right .slick-copy,
+#s5 .slick-left .slick-h1,
+#s5 .slick-right .slick-copy,
+#s7 .slick-left .slick-h1,
+#s8 .slick-left .rh,
+#s9 .slick-left .rh,
+#s12 .s > div:first-child .rh,
+#s13 .slick-left .rh,
+#s15 .s > div:first-child .rh,
+#s16 .s > div:first-child .rh,
+#s17 .s > div:first-child .rh,
+#s19 .s > div:first-child .rh,
+#s20 .s > div:first-child .rh,
+#s21 .s > div:first-child .rh,
+#s22 .s > div:first-child .rh,
+#s23 .s > div:first-child .rh,
+#s24 .s > div:first-child .rh,
+#s25 .s > div:first-child .rh,
+#s28 .s > div:first-child .rh,
+#s29 .s > div:first-child .rh,
+#s30 .s > div:first-child .rh,
+#s31 .s > div:first-child .rh,
+#s32 .s > div:first-child .rh,
+#s33 .s > div:first-child .rh{
+  font-size: var(--wc-panel-title) !important;
+}
+/* Increase selected transition headlines by ~15% from v15 */
+#s6 .rh,
+#s10 .rh,
+#s14 .rh,
+#s18 .rh,
+#s26 .rh{
+  font-size: clamp(28px,3.57vw,48px) !important;
+}
+#s15 .rh{
+  font-size: clamp(25px,3.62vw,45px) !important;
+}
+#s25 .rh{
+  font-size: clamp(29px,4.43vw,55px) !important;
+}
+
 </style>
 </head>
 <body>
 <div class="player" id="player">
 <div class="brand-bar" id="brand-bar">
 <div class="bn"><b>Agency</b>Three</div>
-<div class="slbl" id="slide-label">Executive Level Technology Leadership Diagnostic</div>
-<div id="slide-num" style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.22);letter-spacing:0.06em;font-family:&#39;DM Sans&#39;,sans-serif">01 / 34</div>
+<div class="slbl" id="slide-label">What changed</div>
+<div id="slide-num" style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.22);letter-spacing:0.06em;font-family:&#39;DM Sans&#39;,sans-serif">04 / 34</div>
 </div>
-'<div class="slide active" id="s0">
+'<div class="slide" id="s0" style="opacity: 0;">
 <div class="slick-bg"></div>
 <div class="slick-split">
   <div class="slick-left">
@@ -2893,43 +2954,43 @@ html,body{background:radial-gradient(circle at top left, #112545 0%, #081628 38%
   </div>
 </div>
 </div>
-'<div class="slide" id="s1">
+'<div class="slide" id="s1" style="opacity: 0;">
 <div class="slick-bg"></div>
 <div class="slick-split">
   <div class="slick-left">
-    <div class="slick-rule rs"></div>
-    <h1 class="slick-h1 orange rh" style="font-size:70%;line-height:1.15">BUT let’s start with an inconvenient truth;</h1>
+    <div class="slick-rule rs on"></div>
+    <h1 class="slick-h1 orange rh on" style="font-size:70%;line-height:1.15">BUT let’s start with an inconvenient truth;</h1>
   </div>
   <div class="slick-right">
-    <h2 class="slick-copy big rh">your technology strategy is only as strong as the leaders executing it.</h2>
+    <h2 class="slick-copy big rh on">your technology strategy is only as strong as the leaders executing it.</h2>
   </div>
 </div>
 </div>
-'<div class="slide" id="s2">
+'<div class="slide" id="s2" style="opacity: 0;">
 <div class="slick-bg"></div>
 <div class="slick-split">
   <div class="slick-left">
-    <div class="slick-kicker orange re">The decision gap</div>
-    <h2 class="slick-h1 small rh">Most organisations can describe the technology ambition. Far fewer can define the leadership conditions required to deliver it.</h2>
+    <div class="slick-kicker orange re on">The decision gap</div>
+    <h2 class="slick-h1 small rh on">Most organisations can describe the technology ambition. Far fewer can define the leadership conditions required to deliver it.</h2>
   </div>
   <div class="slick-right">
-    <h2 class="slick-copy big rh">That gap matters because senior technology leadership is now shaped by board expectations, AI, cyber, data, sponsorship, culture, operating maturity and execution risk.</h2>
-    <div class="slick-note rb">If the mandate is wrong, even a strong assessment process can point to the wrong leader.</div>
+    <h2 class="slick-copy big rh on">That gap matters because senior technology leadership is now shaped by board expectations, AI, cyber, data, sponsorship, culture, operating maturity and execution risk.</h2>
+    <div class="slick-note rb on">If the mandate is wrong, even a strong assessment process can point to the wrong leader.</div>
   </div>
 </div>
 </div>
-'<div class="slide" id="s3">
+'<div class="slide active" id="s3">
 <div class="slick-bg"></div>
 <div class="slick-split">
   <div class="slick-left">
-    <div class="slick-kicker re">What has changed</div>
-    <h2 class="slick-h1 small rh">The role has changed more in five years than in the two decades before it. Today’s CIO is operating at the intersection of strategy, risk and execution.</h2>
+    <div class="slick-kicker re on">What has changed</div>
+    <h2 class="slick-h1 small rh on">The role has changed more in five years than in the two decades before it. Today’s CIO is operating at the intersection of strategy, risk and execution.</h2>
   </div>
   <div class="slick-right">
     <div class="slick-card-grid" style="gap:16px;max-width:700px;width:100%">
-      <div class="slick-card rcard"><div class="slick-num">AI</div><div class="slick-card-title">Board ambition is high, but literacy is uneven</div><div class="slick-card-body">The CIO must turn enthusiasm into executable strategy on foundations that may not be ready.</div></div>
-      <div class="slick-card orange rcard"><div class="slick-num">Cyber</div><div class="slick-card-title">Technology risk is now board-level and regulatory</div><div class="slick-card-body">The CIO must govern, escalate and explain risk with confidence.</div></div>
-      <div class="slick-card green rcard"><div class="slick-num">Data</div><div class="slick-card-title">Competitive advantage depends on data maturity</div><div class="slick-card-body">The organisation must govern, connect and commercialise data as an enterprise capability.</div></div>
+      <div class="slick-card rcard on"><div class="slick-num">AI</div><div class="slick-card-title">Board ambition is high, but literacy is uneven</div><div class="slick-card-body">The CIO must turn enthusiasm into executable strategy on foundations that may not be ready.</div></div>
+      <div class="slick-card orange rcard on"><div class="slick-num">Cyber</div><div class="slick-card-title">Technology risk is now board-level and regulatory</div><div class="slick-card-body">The CIO must govern, escalate and explain risk with confidence.</div></div>
+      <div class="slick-card green rcard on"><div class="slick-num">Data</div><div class="slick-card-title">Competitive advantage depends on data maturity</div><div class="slick-card-body">The organisation must govern, connect and commercialise data as an enterprise capability.</div></div>
     </div>
   </div>
 </div>
@@ -3813,9 +3874,9 @@ html,body{background:radial-gradient(circle at top left, #112545 0%, #081628 38%
 <svg fill="none" height="20" viewBox="0 0 20 20" width="20"><path d="M12 5l-5 5 5 5" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path></svg>
 </button>
 <div class="pb" id="pb" onclick="seekBar(event)" style="cursor:pointer">
-<div class="pf" id="pf" style="width: 2.94118%;"></div>
+<div class="pf" id="pf" style="width: 11.7647%;"></div>
 </div>
-<div class="sinfo" id="si">1 / 18</div>
+<div class="sinfo" id="si">4 / 34</div>
 <button class="cbtn" onclick="nav(1)" title="Next">
 <svg fill="none" height="20" viewBox="0 0 20 20" width="20"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path></svg>
 </button>
@@ -3828,13 +3889,13 @@ html,body{background:radial-gradient(circle at top left, #112545 0%, #081628 38%
 </div>
 <!-- PROGRESS NAV -->
 <nav class="section-progress" id="section-progress">
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#cover"><span class="sp-label">The Problem</span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#storm"><span class="sp-num">01</span><span class="sp-label">Why It Matters</span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#brief"><span class="sp-num">02</span><span class="sp-label">The Brief</span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#model"><span class="sp-num">03</span><span class="sp-label"><span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">EQ</span> + <span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">IQ</span> = <span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">XQ</span></span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#screening"><span class="sp-num">04</span><span class="sp-label">Pre-Screening</span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#interview"><span class="sp-num">05</span><span class="sp-label">The Diagnostic</span></a>
-<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v15.html#shortlist"><span class="sp-num">06</span><span class="sp-label">The Shortlist</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#cover"><span class="sp-label">The Problem</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#storm"><span class="sp-num">01</span><span class="sp-label">Why It Matters</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#brief"><span class="sp-num">02</span><span class="sp-label">The Brief</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#model"><span class="sp-num">03</span><span class="sp-label"><span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">EQ</span> + <span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">IQ</span> = <span style="font-family:&#39;DM Sans&#39;,sans-serif;font-weight:900;font-size:inherit;color:inherit;letter-spacing:-0.02em;font-style:normal;">XQ</span></span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#screening"><span class="sp-num">04</span><span class="sp-label">Pre-Screening</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#interview"><span class="sp-num">05</span><span class="sp-label">The Diagnostic</span></a>
+<a class="sp-item" href="file:///Users/bryanmacdonald/Downloads/agency-three-world-class-redesign-v16.html#shortlist"><span class="sp-num">06</span><span class="sp-label">The Shortlist</span></a>
 </nav>
 <!-- ═══════════════════════════════════════
      COVER
