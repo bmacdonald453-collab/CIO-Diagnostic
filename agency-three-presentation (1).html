@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agency Three — Career Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ───────────────────────────────────────────────────── */
+  :root {
+    --navy:    #1B2B3B;
+    --navy-lt: #243649;
+    --salmon:  #D4725A;
+    --salmon-lt: #E08A74;
+    --cream:   #F7F5F2;
+    --white:   #FFFFFF;
+    --grey:    #8A9BB0;
+    --grey-lt: #B8C5D0;
+    --rule:    rgba(212,114,90,0.4);
+  }
+
+  /* ── RESET ────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── SLIDE SYSTEM ─────────────────────────────────────────────── */
+  .slide {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide--dark  { background: var(--navy); }
+  .slide--light { background: var(--cream); color: var(--navy); }
+  .slide--navy-lt { background: var(--navy-lt); }
+
+  /* ── NAVIGATION DOTS ──────────────────────────────────────────── */
+  .nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    z-index: 100;
+  }
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+  .nav-dot.active, .nav-dot:hover { background: var(--salmon); transform: scale(1.4); }
+  .slide--light ~ .nav-dots .nav-dot,
+  .nav-dots.on-light .nav-dot { background: rgba(27,43,59,0.25); }
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────────────── */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--salmon);
+    margin-bottom: 2rem;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--salmon);
+    flex-shrink: 0;
+  }
+
+  .slide--light .eyebrow { color: var(--salmon); }
+
+  .display {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .display--hero { font-size: clamp(3.5rem, 7vw, 6rem); }
+  .display--h1   { font-size: clamp(2.5rem, 4.5vw, 4rem); }
+  .display--h2   { font-size: clamp(2rem, 3.5vw, 3rem); }
+  .display--h3   { font-size: clamp(1.6rem, 2.5vw, 2.2rem); }
+
+  .display .accent { color: var(--salmon); font-style: italic; }
+  .slide--light .display { color: var(--navy); }
+
+  .body-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    line-height: 1.75;
+    color: var(--grey-lt);
+    max-width: 52ch;
+  }
+  .slide--light .body-text { color: #4A5C6A; }
+
+  .label-sm {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .slide--light .label-sm { color: #8A9BB0; }
+
+  /* ── RULE DIVIDER ─────────────────────────────────────────────── */
+  .rule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--salmon);
+    margin: 1.5rem 0;
+  }
+
+  /* ── GRID CONTAINERS ──────────────────────────────────────────── */
+  .content-center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6vw;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .content-left {
+    padding: 6vw 8vw;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .split__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vw;
+  }
+  .split__panel--dark { background: var(--navy); }
+  .split__panel--light { background: var(--cream); }
+  .split__panel--salmon { background: var(--salmon); }
+  .split__panel--img {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+  }
+  .split__panel--img svg {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── STAT BLOCKS ──────────────────────────────────────────────── */
+  .stat-row {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 0.25rem; }
+  .stat__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: var(--salmon);
+    line-height: 1;
+  }
+  .stat__label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* ── CHECK LIST ───────────────────────────────────────────────── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-top: 2rem;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--grey-lt);
+    line-height: 1.6;
+  }
+  .checklist li::before {
+    content: '';
+    display: block;
+    width: 14px; height: 14px;
+    min-width: 14px;
+    border: 1px solid var(--salmon);
+    border-radius: 50%;
+    margin-top: 4px;
+    position: relative;
+    background: radial-gradient(circle, var(--salmon) 40%, transparent 40%);
+  }
+  .slide--light .checklist li { color: #4A5C6A; }
+
+  /* ── PROBLEM CARDS ────────────────────────────────────────────── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+  }
+  .problem-card {
+    padding: 3rem 2.5rem;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+  .problem-card:hover { background: var(--navy-lt); }
+  .problem-card__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(212,114,90,0.2);
+    line-height: 1;
+    margin-bottom: -0.5rem;
+  }
+  .problem-card__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .problem-card__body {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--grey);
+    line-height: 1.7;
+  }
+
+  /* ── THREE DISCIPLINES ────────────────────────────────────────── */
+  .discipline-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+  }
+  .discipline-card {
+    background: var(--cream);
+    padding: 3rem 2.5rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--navy);
+  }
+  .discipline-card__num {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--salmon);
+    font-weight: 500;
+  }
+  .discipline-card__rule { width: 2rem; height: 1px; background: var(--salmon); }
+  .discipline-card__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--navy);
+  }
+  .discipline-card__body {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: #4A5C6A;
+    line-height: 1.7;
+    margin-top: 0.5rem;
+  }
+
+  /* ── FRAMEWORK STAGES ─────────────────────────────────────────── */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    width: 100%;
+    background: rgba(27,43,59,0.08);
+  }
+  .stage-card {
+    background: var(--cream);
+    padding: 2.5rem 3rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    transition: background 0.25s;
+  }
+  .stage-card:hover { background: #EEECEA; }
+  .stage-card__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--salmon);
+    line-height: 1;
+    min-width: 2.5rem;
+    opacity: 0.5;
+  }
+  .stage-card__content { display: flex; flex-direction: column; gap: 0.5rem; }
+  .stage-card__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .stage-card__sub {
+    font-size: 0.83rem;
+    font-weight: 300;
+    color: #4A5C6A;
+    line-height: 1.6;
+  }
+  .stage-card__bryan {
+    font-size: 0.78rem;
+    color: var(--salmon);
+    font-weight: 400;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* ── EQ/IQ FRAMEWORK ─────────────────────────────────────────── */
+  .eq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+  }
+  .eq-panel {
+    padding: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .eq-panel--left { background: var(--navy); }
+  .eq-panel--right { background: var(--navy-lt); }
+  .eq-panel__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--salmon);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .eq-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .eq-item:last-child { border-bottom: none; }
+  .eq-item__num {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--salmon);
+    opacity: 0.6;
+    padding-top: 3px;
+    min-width: 1.5rem;
+  }
+  .eq-item__text {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--grey-lt);
+    line-height: 1.5;
+  }
+
+  /* ── HALLMARKS ────────────────────────────────────────────────── */
+  .hallmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .hallmark {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212,114,90,0.3);
+  }
+  .hallmark__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--salmon);
+    opacity: 0.6;
+  }
+  .hallmark__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.25;
+  }
+  .hallmark__body {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--grey);
+    line-height: 1.75;
+  }
+
+  /* ── QUOTE BLOCK ──────────────────────────────────────────────── */
+  .quote-block {
+    max-width: 700px;
+    text-align: center;
+    padding: 6vw;
+  }
+  .quote-block__mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--salmon);
+    line-height: 0.5;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .quote-block__text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+  }
+  .quote-block__attr {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* ── WHAT YOU GAIN ────────────────────────────────────────────── */
+  .gain-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    width: 100%;
+    background: rgba(27,43,59,0.06);
+  }
+  .gain-card {
+    background: var(--cream);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .gain-card__icon {
+    width: 2rem; height: 2rem;
+    color: var(--salmon);
+  }
+  .gain-card__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .gain-card__body {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: #4A5C6A;
+    line-height: 1.7;
+  }
+
+  /* ── CLOSE SLIDE ──────────────────────────────────────────────── */
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .close-left {
+    background: var(--salmon);
+    padding: 7vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .close-right {
+    background: var(--navy-lt);
+    padding: 7vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .step {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .step:first-of-type { padding-top: 0; }
+  .step:last-child { border-bottom: none; }
+  .step__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--salmon);
+    line-height: 1;
+    min-width: 2.5rem;
+    opacity: 0.5;
+  }
+  .step__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+  .step__body {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--grey-lt);
+    line-height: 1.65;
+  }
+
+  /* ── SECTION HEADER (full-width dark band) ─────────────────────── */
+  .section-header {
+    width: 100%;
+    padding: 5rem 8vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--navy);
+  }
+
+  /* ── HERO SVG ILLUSTRATION ────────────────────────────────────── */
+  .hero-illustration {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 45%;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* ── PAGE PROGRESS ────────────────────────────────────────────── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--salmon);
+    z-index: 200;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.8s ease both; }
+  .fade-up-2 { animation: fadeUp 0.8s 0.15s ease both; }
+  .fade-up-3 { animation: fadeUp 0.8s 0.3s ease both; }
+  .fade-up-4 { animation: fadeUp 0.8s 0.45s ease both; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MISC ─────────────────────────────────────────────────────── */
+  a { color: var(--salmon); text-decoration: none; }
+  ::selection { background: var(--salmon); color: var(--white); }
+
+  @media (max-width: 768px) {
+    .split, .problem-grid, .discipline-grid, .eq-grid,
+    .hallmarks-grid, .gain-grid, .close-grid, .stage-grid {
+      grid-template-columns: 1fr;
+    }
+    .problem-grid, .discipline-grid { gap: 1px; }
+    .stage-grid { gap: 1px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up, .fade-up-2, .fade-up-3, .fade-up-4, .reveal {
+      animation: none;
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1 — COVER
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s1" data-slide="1">
+  <div class="content-center">
+    <div class="eyebrow fade-up">For Senior Technology Executives</div>
+    <h1 class="display display--hero fade-up-2">
+      <span class="accent">Agency</span> Three
+    </h1>
+    <div class="rule" style="margin: 2rem auto;"></div>
+    <p class="body-text fade-up-3" style="text-align:center; color: var(--grey-lt);">
+      Strategic career navigation, leadership assessment, and executive coaching<br>
+      for C-suite Technology, Digital and Product leaders.
+    </p>
+    <p class="label-sm fade-up-4" style="margin-top: 2.5rem; color: var(--grey);">agency-three.com</p>
+  </div>
+  <!-- subtle geometric accent -->
+  <svg class="hero-illustration" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="350" cy="150" r="300" stroke="white" stroke-width="0.5"/>
+    <circle cx="350" cy="150" r="200" stroke="white" stroke-width="0.5"/>
+    <circle cx="350" cy="150" r="100" stroke="white" stroke-width="0.5"/>
+  </svg>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 2 — THE ASYMMETRY
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s2" data-slide="2">
+  <div class="content-center" style="max-width:800px;">
+    <div class="eyebrow reveal">The Problem</div>
+    <h2 class="display display--h1 reveal" style="text-align:center; margin-bottom: 1.5rem;">
+      The executive market is<br><em class="accent">structurally asymmetric.</em>
+    </h2>
+    <p class="body-text reveal" style="text-align:center; margin: 0 auto 3rem;">
+      Organisations enter critical Technology, Digital and Product leadership decisions with boards, retained search firms, and advisory teams. Executives navigate the same decisions largely alone.
+    </p>
+    <div class="rule reveal" style="margin: 0 auto 3rem;"></div>
+    <p class="display display--h3 reveal" style="text-align:center; font-style:italic; color: var(--grey-lt);">
+      "Nearly 30 years inside the rooms where these decisions are made; now exclusively on your side."
+    </p>
+    <p class="label-sm reveal" style="margin-top: 1.5rem; text-align:center;">Bryan MacDonald, Founder</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3 — THE THREE PROBLEMS
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s3" data-slide="3" style="flex-direction:column; padding: 0; align-items:stretch;">
+  <div class="section-header reveal">
+    <div class="eyebrow" style="margin-bottom:1.2rem;">The Problem</div>
+    <h2 class="display display--h2" style="text-align:center;">
+      Most senior moves that look like progression<br>
+      <em class="accent">quietly narrow your future options.</em>
+    </h2>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card reveal">
+      <span class="problem-card__num">01</span>
+      <h3 class="problem-card__title">The wrong "step up" narrows your future market value.</h3>
+      <p class="problem-card__body">By C-suite, it is not whether a move looks like progression; it is whether it positions you for the move after that.</p>
+    </div>
+    <div class="problem-card reveal">
+      <span class="problem-card__num">02</span>
+      <h3 class="problem-card__title">Search processes test far more than candidates realise.</h3>
+      <p class="problem-card__body">Senior executives still assume the process evaluates only capability and experience. It does not. Bryan has been on both sides of that table.</p>
+    </div>
+    <div class="problem-card reveal">
+      <span class="problem-card__num">03</span>
+      <h3 class="problem-card__title">A senior role is an operating agreement, not just an offer.</h3>
+      <p class="problem-card__body">Scope, authority, decision rights, and executive sponsorship determine whether the role is set up for success, before you sign.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4 — BRYAN MACDONALD
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s4" data-slide="4">
+  <div class="split" style="min-height:100vh;">
+    <div class="split__panel split__panel--dark">
+      <div class="eyebrow reveal">About the Founder</div>
+      <h2 class="display display--h2 reveal" style="margin-bottom:1.5rem;">Bryan<br>MacDonald</h2>
+      <div class="rule reveal"></div>
+      <p class="body-text reveal" style="margin-top: 1.5rem;">
+        Founder &amp; Principal, Agency Three. Former Regional Managing Partner, Heidrick &amp; Struggles CIO Practice (Europe). Worked with Harvard, MIT, and Kellogg on leadership definition within BP's global Technology, Digital and Product function.
+      </p>
+      <p class="body-text reveal" style="margin-top: 1rem;">
+        Agency Three was founded on a single conviction: senior Technology, Digital and Product executives deserve the same strategic advantage that organisations already have when making appointment decisions.
+      </p>
+      <div class="stat-row reveal">
+        <div class="stat">
+          <span class="stat__num">500<span style="font-size:1.8rem;">+</span></span>
+          <span class="stat__label">Placements</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">7,000<span style="font-size:1.8rem;">+</span></span>
+          <span class="stat__label">Executive Interviews</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">~30</span>
+          <span class="stat__label">Years of Practice</span>
+        </div>
+      </div>
+    </div>
+    <div class="split__panel" style="background:var(--navy-lt); justify-content:flex-start; padding-top: 6vw;">
+      <p class="label-sm reveal" style="margin-bottom:2.5rem;">Advisory &amp; Board Positions</p>
+      <div style="display:flex; flex-direction:column; gap:2rem;">
+        <div class="reveal" style="border-top: 1px solid rgba(212,114,90,0.2); padding-top:1.5rem;">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.4rem;">Signifly</p>
+          <p style="font-size:0.8rem; color:var(--salmon); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.5rem;">Board Member</p>
+          <p style="font-size:0.83rem; color:var(--grey); font-weight:300; line-height:1.6;">Strategy, leadership development, and growth for this Danish digital design consultancy.</p>
+        </div>
+        <div class="reveal" style="border-top: 1px solid rgba(212,114,90,0.2); padding-top:1.5rem;">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.4rem;">Nodes (Monstar Lab)</p>
+          <p style="font-size:0.8rem; color:var(--salmon); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.5rem;">Chair of Global Advisory Board</p>
+          <p style="font-size:0.83rem; color:var(--grey); font-weight:300; line-height:1.6;">Scaling strategy, talent, and international positioning across US, Middle East, and Europe.</p>
+        </div>
+        <div class="reveal" style="border-top: 1px solid rgba(212,114,90,0.2); padding-top:1.5rem;">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.4rem;">Insight Partners</p>
+          <p style="font-size:0.8rem; color:var(--salmon); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.5rem;">Insight Advisory Network</p>
+          <p style="font-size:0.83rem; color:var(--grey); font-weight:300; line-height:1.6;">Advising portfolio companies on digital leadership and organisational scaling.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5 — THREE DISCIPLINES
+════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s5" data-slide="5" style="flex-direction:column; padding:0; align-items:stretch; background:var(--cream);">
+  <div style="background:var(--cream); padding: 5rem 8vw 3rem; text-align:center;" class="reveal">
+    <div class="eyebrow" style="justify-content:center; color:var(--salmon);">The Agency Three Approach</div>
+    <h2 class="display display--h2" style="color:var(--navy);">Three disciplines. One integrated system.</h2>
+  </div>
+  <div class="discipline-grid">
+    <div class="discipline-card reveal">
+      <span class="discipline-card__num">0 1</span>
+      <div class="discipline-card__rule"></div>
+      <h3 class="discipline-card__title">Career Advisory</h3>
+      <p class="discipline-card__body">Strategic counsel for high-stakes career moves. Sharpen your leadership narrative, evaluate opportunities with rigour, and negotiate the success conditions that turn a role into a platform.</p>
+    </div>
+    <div class="discipline-card reveal">
+      <span class="discipline-card__num">0 2</span>
+      <div class="discipline-card__rule"></div>
+      <h3 class="discipline-card__title">Leadership Performance</h3>
+      <p class="discipline-card__body">Objective clarity on how you are perceived at C-suite level. Our proprietary EQ/IQ framework identifies your specific strengths, gaps, and derailers so development is targeted.</p>
+    </div>
+    <div class="discipline-card reveal">
+      <span class="discipline-card__num">0 3</span>
+      <div class="discipline-card__rule"></div>
+      <h3 class="discipline-card__title">Executive Coaching</h3>
+      <p class="discipline-card__body">Build the capabilities that drive progression. Coaching designed for senior Technology, Digital and Product leaders at critical inflection points; from bigger roles to board-level credibility.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6 — THIS IS NOT / THIS IS
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s6" data-slide="6">
+  <div class="content-center" style="max-width:820px;">
+    <div class="eyebrow reveal">How we work</div>
+    <h2 class="display display--h1 reveal" style="text-align:center; margin-bottom:2rem;">
+      This is not coaching.<br>This is not headhunting.
+    </h2>
+    <div class="rule reveal" style="margin: 0 auto 2rem;"></div>
+    <p class="display display--h3 reveal" style="text-align:center; color:var(--salmon); font-style:italic; margin-bottom:2.5rem;">
+      This is strategic counsel for leadership, influence, and trajectory.
+    </p>
+    <p class="body-text reveal" style="text-align:center; margin: 0 auto;">
+      Coaches work on behaviour. Headhunters are retained by the hiring organisation. Bryan does neither. He acts as your strategic counterpart in the executive market, helping you see dynamics clearly and move with clarity, control, and confidence.
+    </p>
+    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:2px; width:100%; margin-top:4rem; background:rgba(255,255,255,0.04);">
+      <div class="reveal" style="padding:2rem; background:var(--navy-lt); text-align:center;">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.75rem;">Clarify your<br>leadership narrative</p>
+        <p style="font-size:0.78rem; color:var(--grey); font-weight:300; line-height:1.6;">Define what you are known for and ensure it resonates with the market you want to influence.</p>
+      </div>
+      <div class="reveal" style="padding:2rem; background:var(--navy-lt); text-align:center;">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.75rem;">Navigate search<br>with intention</p>
+        <p style="font-size:0.78rem; color:var(--grey); font-weight:300; line-height:1.6;">Understand what every stage is really testing. Surface objections before they become blockers.</p>
+      </div>
+      <div class="reveal" style="padding:2rem; background:var(--navy-lt); text-align:center;">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:0.75rem;">Secure roles that<br>set you up to succeed</p>
+        <p style="font-size:0.78rem; color:var(--grey); font-weight:300; line-height:1.6;">Scope, authority, decision rights, resources. The offer is an operating agreement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 7 — THE SIX STAGE FRAMEWORK
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s7" data-slide="7" style="flex-direction:column; padding:0; align-items:stretch;">
+  <div style="background:var(--cream); padding:4.5rem 8vw 3rem; text-align:center;" class="reveal">
+    <div class="eyebrow" style="justify-content:center;">The Framework</div>
+    <h2 class="display display--h2" style="color:var(--navy); margin-bottom:0.75rem;">Six stages. One systematic approach.</h2>
+    <p style="font-size:0.95rem; color:#4A5C6A; font-weight:300; max-width:60ch; margin:0 auto;">
+      Most executives navigate career transitions reactively. Our framework makes the journey deliberate; from how you understand your own value through to negotiating the conditions for success.
+    </p>
+  </div>
+  <div class="stage-grid">
+    <div class="stage-card reveal">
+      <span class="stage-card__num">01</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Clarity</h3>
+        <p class="stage-card__sub">Know yourself before the market knows you. Map your differentiated value at C-suite level; not what you have done, but where you reliably deliver impact.</p>
+        <p class="stage-card__bryan">After 7,000+ interviews, Bryan knows the gap between how executives describe themselves and how they land.</p>
+      </div>
+    </div>
+    <div class="stage-card reveal">
+      <span class="stage-card__num">02</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Visibility</h3>
+        <p class="stage-card__sub">Ensure the 10–15 people who control opportunity flow in your space know you for the right things, before you need them to.</p>
+        <p class="stage-card__bryan">Knowing which 10–15 people matter requires the inside knowledge Bryan has built over three decades.</p>
+      </div>
+    </div>
+    <div class="stage-card reveal">
+      <span class="stage-card__num">03</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Due Diligence</h3>
+        <p class="stage-card__sub">Evaluate every opportunity before it becomes an expensive mistake. Mandate. Structure. Politics. Undisclosed tensions. The capital the role will actually require.</p>
+        <p class="stage-card__bryan">Bryan has been inside the rooms where these decisions are made. He can read what an organisation is not saying.</p>
+      </div>
+    </div>
+    <div class="stage-card reveal">
+      <span class="stage-card__num">04</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Influence</h3>
+        <p class="stage-card__sub">Take control of how organisations perceive your value. Shift from answering questions to shaping the conversation, before the process begins.</p>
+        <p class="stage-card__bryan">Bryan re-engineers how executives position themselves at each stage so they shape the narrative rather than respond to it.</p>
+      </div>
+    </div>
+    <div class="stage-card reveal">
+      <span class="stage-card__num">05</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Navigation</h3>
+        <p class="stage-card__sub">Understand what every stage of the search is really testing; stay ahead of it. A psychometric is not testing personality. A board session is not testing slides.</p>
+        <p class="stage-card__bryan">Having conducted 7,000+ structured interviews, Bryan understands the hidden architecture of assessment at this level.</p>
+      </div>
+    </div>
+    <div class="stage-card reveal">
+      <span class="stage-card__num">06</span>
+      <div class="stage-card__content">
+        <h3 class="stage-card__title">Negotiation</h3>
+        <p class="stage-card__sub">Secure the authority, resources, and conditions that make success possible. Scope, decision rights, executive sponsorship. Ambiguity at offer stage is political debt in role.</p>
+        <p class="stage-card__bryan">Bryan has closed 500+ appointments from the hiring side. He knows exactly which conditions are negotiable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 8 — EQ / IQ FRAMEWORK
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s8" data-slide="8" style="flex-direction:column; padding:0; align-items:stretch;">
+  <div class="section-header reveal">
+    <div class="eyebrow" style="margin-bottom:1rem;">Assessment Model</div>
+    <h2 class="display display--h2" style="text-align:center; margin-bottom:0.75rem;">EQ + IQ = XQ</h2>
+    <p style="font-size:0.95rem; color:var(--grey); font-weight:300; max-width:58ch; text-align:center;">
+      Ten competencies, developed with Harvard, MIT, and Kellogg, that define what world-class Technology, Digital and Product leadership actually looks like at C-suite level.
+    </p>
+  </div>
+  <div class="eq-grid">
+    <div class="eq-panel eq-panel--left">
+      <p class="eq-panel__heading">Emotional Intelligence; EQ</p>
+      <p style="font-size:0.78rem; color:var(--grey); margin-bottom:1rem;">The human leadership capabilities that drive influence, trust, and organisational momentum</p>
+      <div class="eq-item reveal"><span class="eq-item__num">01</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Strategic Impact</strong><br>The ability to influence, persuade, and achieve results through others; at board level.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">02</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Leading Through Ambiguity</strong><br>Decisiveness under pressure. High-ambiguity tolerance and the ability to create direction from uncertainty.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">03</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Leading and Embedding Change</strong><br>Building solid platforms for transformation through personal advocacy, vision, and drive.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">04</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Leading and Motivating Others</strong><br>Building high-performing teams across cultures, environments, and shared goals.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">05</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Social Competence</strong><br>Recognising, understanding, and managing emotions, yours and others', at executive scale.</p></div>
+    </div>
+    <div class="eq-panel eq-panel--right">
+      <p class="eq-panel__heading">Cognitive Intelligence; IQ</p>
+      <p style="font-size:0.78rem; color:var(--grey); margin-bottom:1rem;">The strategic and commercial capabilities that translate technology into measurable business value</p>
+      <div class="eq-item reveal"><span class="eq-item__num">06</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Simplifying Complexity</strong><br>Identifying opportunities to reduce complexity in products, structures, and information systems.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">07</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Technology Innovation and Transformation</strong><br>Deploying modern technology capability to generate value and achieve business goals.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">08</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Driving Commercial Outcomes</strong><br>Ensuring technology initiatives deliver results across key business metrics and value creation.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">09</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Enterprise Risk Management</strong><br>Managing IT risk in real time, embracing digital transformation while protecting the enterprise.</p></div>
+      <div class="eq-item reveal"><span class="eq-item__num">10</span><p class="eq-item__text"><strong style="color:var(--white); font-weight:400;">Enterprise IT Leadership</strong><br>Planning and deploying IT in the best interests of the enterprise — as a service-based business.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 9 — THREE HALLMARKS
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s9" data-slide="9">
+  <div style="padding: 6vw; width:100%; max-width:1200px;">
+    <div class="eyebrow reveal" style="margin-bottom:2rem;">World-Class Leadership</div>
+    <h2 class="display display--h2 reveal" style="margin-bottom:1rem;">What world-class Technology, Digital and Product<br>leaders are actually defined by.</h2>
+    <p class="label-sm reveal" style="margin-bottom:4rem; font-style:italic; color:var(--grey);">Most people have an opinion. We have the evidence.</p>
+    <div class="hallmarks-grid">
+      <div class="hallmark reveal">
+        <span class="hallmark__num">01</span>
+        <h3 class="hallmark__title">Direction</h3>
+        <p style="font-size:0.78rem; color:var(--salmon); text-transform:uppercase; letter-spacing:0.1em; font-weight:400;">The ability to make the organisation move.</p>
+        <p class="hallmark__body">The best Technology, Digital and Product leaders translate ambiguity into direction, politics into alignment, and competing priorities into a coherent sequence. They sit at the intersection of the board's appetite for growth and the engineering team's appetite for quality; they hold that tension without flinching.</p>
+      </div>
+      <div class="hallmark reveal">
+        <span class="hallmark__num">02</span>
+        <h3 class="hallmark__title">Commercial Instinct</h3>
+        <p style="font-size:0.78rem; color:var(--salmon); text-transform:uppercase; letter-spacing:0.1em; font-weight:400;">Technology as leverage, not discipline.</p>
+        <p class="hallmark__body">The best Technology, Digital and Product executives have stopped thinking about technology as a discipline and started thinking about it as leverage. They understand margin, customer behaviour, and which bets will compound. Most executives default to one side. World-class leaders hold both, permanently.</p>
+      </div>
+      <div class="hallmark reveal">
+        <span class="hallmark__num">03</span>
+        <h3 class="hallmark__title">Trust at Scale</h3>
+        <p style="font-size:0.78rem; color:var(--salmon); text-transform:uppercase; letter-spacing:0.1em; font-weight:400;">Building trust with the board, peers, and the market.</p>
+        <p class="hallmark__body">Technical credibility gets you the chair. It does not keep you in it. The CIOs, CTOs and CDOs who endure invest obsessively in relationships, communicate without jargon, and are known as people whose word means something. In a world where technology risk is existential board risk, that quality has never been worth more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 10 — QUOTE / ROI ARGUMENT
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s10" data-slide="10">
+  <div class="quote-block">
+    <span class="quote-block__mark reveal">&ldquo;</span>
+    <p class="quote-block__text reveal">
+      At C-suite level, one piece of intelligence about what is really being assessed — or one structural condition you would not have known to negotiate — can be worth multiples of the advisory fee.
+    </p>
+    <div class="rule reveal" style="margin: 2rem auto;"></div>
+    <p class="quote-block__attr reveal">Agency Three</p>
+    <div class="reveal" style="margin-top:3rem; display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; text-align:left; max-width:700px; width:100%;">
+      <div style="border-top:1px solid rgba(212,114,90,0.3); padding-top:1.2rem;">
+        <p style="font-size:0.75rem; color:var(--salmon); margin-bottom:0.5rem; font-weight:400;">01</p>
+        <p style="font-size:0.83rem; color:var(--grey-lt); font-weight:300; line-height:1.55;">Will this role lead to PE portfolio or board work?</p>
+      </div>
+      <div style="border-top:1px solid rgba(212,114,90,0.3); padding-top:1.2rem;">
+        <p style="font-size:0.75rem; color:var(--salmon); margin-bottom:0.5rem; font-weight:400;">02</p>
+        <p style="font-size:0.83rem; color:var(--grey-lt); font-weight:300; line-height:1.55;">Will this mandate build NED credibility?</p>
+      </div>
+      <div style="border-top:1px solid rgba(212,114,90,0.3); padding-top:1.2rem;">
+        <p style="font-size:0.75rem; color:var(--salmon); margin-bottom:0.5rem; font-weight:400;">03</p>
+        <p style="font-size:0.83rem; color:var(--grey-lt); font-weight:300; line-height:1.55;">Does this role appear to be progression but actually narrow your options?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 11 — WHAT YOU GAIN
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s11" data-slide="11" style="flex-direction:column; padding:0; align-items:stretch;">
+  <div style="background:var(--cream); padding:4.5rem 8vw 3rem; text-align:center;" class="reveal">
+    <div class="eyebrow" style="justify-content:center;">What You Gain</div>
+    <h2 class="display display--h2" style="color:var(--navy);">Clarity. Evidence. Strategic leverage.</h2>
+  </div>
+  <div class="gain-grid">
+    <div class="gain-card reveal">
+      <svg class="gain-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      <h3 class="gain-card__title">Objective Self-Awareness</h3>
+      <p class="gain-card__body">Understand exactly how you are perceived at C-suite level; the intelligence that boards and search firms already have, but executives rarely do.</p>
+    </div>
+    <div class="gain-card reveal">
+      <svg class="gain-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <h3 class="gain-card__title">Focused Development</h3>
+      <p class="gain-card__body">Prioritise the specific competencies that will have the greatest impact on your leadership effectiveness and career progression, not a generic plan.</p>
+    </div>
+    <div class="gain-card reveal">
+      <svg class="gain-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <h3 class="gain-card__title">Risk Mitigation</h3>
+      <p class="gain-card__body">Identify and address potential derailers before they affect your trajectory. Move forward with confidence, not assumption.</p>
+    </div>
+    <div class="gain-card reveal">
+      <svg class="gain-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      <h3 class="gain-card__title">Strategic Career Leverage</h3>
+      <p class="gain-card__body">Navigate high-stakes moves with a trusted strategic partner; from opportunity evaluation and stakeholder influence through to final negotiation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 12 — CLOSE / BEGIN THE JOURNEY
+════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s12" data-slide="12" style="padding:0; align-items:stretch;">
+  <div class="close-grid">
+    <div class="close-left">
+      <div>
+        <div class="eyebrow reveal" style="color:rgba(255,255,255,0.7);">Begin your journey</div>
+        <h2 class="display display--h2 reveal" style="color:var(--white); margin-top:1rem;">Ready to move<br>with clarity<br>and confidence?</h2>
+      </div>
+      <div class="reveal">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-style:italic; color:rgba(255,255,255,0.85); line-height:1.65; margin-bottom:2rem;">
+          Whether you are preparing for your next move, stepping into a bigger role, or sensing you are being evaluated differently at C-suite level; Agency Three gives you the clarity, evidence, and strategic counsel to act with confidence.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+          <p style="font-size:0.85rem; color:rgba(255,255,255,0.7); font-weight:300;">bryan@agency-three.com</p>
+          <p style="font-size:0.85rem; color:rgba(255,255,255,0.7); font-weight:300;">agency-three.com</p>
+        </div>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:rgba(255,255,255,0.3); font-style:italic;">Agency Three</p>
+    </div>
+    <div class="close-right">
+      <p class="label-sm reveal" style="color:var(--grey); margin-bottom:1rem;">How it begins</p>
+      <div class="step reveal">
+        <span class="step__num">1</span>
+        <div>
+          <p class="step__title">Diagnostic conversation</p>
+          <p class="step__body">A structured 60-minute session to map your current position against the market and identify where the leverage is.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <span class="step__num">2</span>
+        <div>
+          <p class="step__title">Framework assessment</p>
+          <p class="step__body">An EQ+IQ evaluation that produces a concrete XQ profile and a prioritised development agenda benchmarked at C-suite level.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <span class="step__num">3</span>
+        <div>
+          <p class="step__title">Engagement agreement</p>
+          <p class="step__body">A clear, written mandate with defined scope, deliverables, and terms. Strategic Consultation from £350 per hour; Process Advisory and Retainer options also available.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NAV DOTS ─────────────────────────────────────────────────── -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation">
+  <button class="nav-dot active" data-target="s1" title="Cover"></button>
+  <button class="nav-dot" data-target="s2" title="The Asymmetry"></button>
+  <button class="nav-dot" data-target="s3" title="The Problem"></button>
+  <button class="nav-dot" data-target="s4" title="Bryan MacDonald"></button>
+  <button class="nav-dot" data-target="s5" title="Three Disciplines"></button>
+  <button class="nav-dot" data-target="s6" title="This Is Not…"></button>
+  <button class="nav-dot" data-target="s7" title="Six Stages"></button>
+  <button class="nav-dot" data-target="s8" title="EQ / IQ"></button>
+  <button class="nav-dot" data-target="s9" title="Hallmarks"></button>
+  <button class="nav-dot" data-target="s10" title="ROI"></button>
+  <button class="nav-dot" data-target="s11" title="What You Gain"></button>
+  <button class="nav-dot" data-target="s12" title="Begin"></button>
+</nav>
+
+<script>
+  // ── PROGRESS BAR ──────────────────────────────────────────────
+  const progress = document.getElementById('progress');
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (scrolled / total * 100) + '%';
+  }
+
+  // ── NAV DOTS ──────────────────────────────────────────────────
+  const dots = document.querySelectorAll('.nav-dot');
+  const slides = document.querySelectorAll('[data-slide]');
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = document.getElementById(dot.dataset.target);
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateDots() {
+    const scrollMid = window.scrollY + window.innerHeight * 0.5;
+    let active = 0;
+    slides.forEach((s, i) => {
+      if (s.offsetTop <= scrollMid) active = i;
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+
+    // Dot colour on light slides
+    const nav = document.getElementById('navDots');
+    const currentSlide = slides[active];
+    if (currentSlide && currentSlide.classList.contains('slide--light')) {
+      nav.classList.add('on-light');
+    } else {
+      nav.classList.remove('on-light');
+    }
+  }
+
+  // ── REVEAL ON SCROLL ──────────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // stagger siblings
+        const siblings = [...e.target.parentElement.querySelectorAll('.reveal.visible')];
+        const idx = siblings.indexOf(e.target);
+        e.target.style.transitionDelay = (idx * 0.08) + 's';
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  window.addEventListener('scroll', () => {
+    updateProgress();
+    updateDots();
+  }, { passive: true });
+
+  // ── KEYBOARD NAV ──────────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    const scrollMid = window.scrollY + window.innerHeight * 0.5;
+    let current = 0;
+    slides.forEach((s, i) => { if (s.offsetTop <= scrollMid) current = i; });
+    if ((e.key === 'ArrowDown' || e.key === 'PageDown') && current < slides.length - 1) {
+      slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if ((e.key === 'ArrowUp' || e.key === 'PageUp') && current > 0) {
+      slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  updateProgress();
+  updateDots();
+</script>
+</body>
+</html>
