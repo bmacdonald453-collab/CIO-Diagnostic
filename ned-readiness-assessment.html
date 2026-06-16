@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NED Board Readiness Assessment — The Digital Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+
+:root {
+  --red:     #B01C1C;
+  --red-d:   #8B1515;
+  --red-bg:  #FAF0F0;
+  --cream:   #F7F5F2;
+  --border:  #D8D4CE;
+  --text:    #1A1714;
+  --mid:     #4A4745;
+  --dim:     #7A7570;
+  --light:   #AAAAAA;
+  --white:   #FFFFFF;
+  --rule:    #C0BAB4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--cream); font-family: Georgia, 'Times New Roman', serif;
+  -webkit-font-smoothing: antialiased; color: var(--text); }
+body { min-height: 100vh; }
+
+/* ── ECONOMIST RULE ─────────────────────────────────────────── */
+.rule-top { height: 4px; background: var(--red); width: 100%; }
+.rule-thin { height: 1px; background: var(--rule); width: 100%; }
+.rule-red  { height: 2px; background: var(--red); display: inline-block; }
+
+/* ── SCREENS ─────────────────────────────────────────────────── */
+.screen { display: none; min-height: 100vh; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ── HEADER ──────────────────────────────────────────────────── */
+.hdr { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 56px; display: flex; align-items: stretch; justify-content: space-between; min-height: 64px; }
+.hdr-logo { display: flex; flex-direction: column; justify-content: center; padding: 12px 0; border-right: 1px solid var(--border); padding-right: 28px; }
+.hdr-logo-main { font-family: Georgia, serif; font-size: 18px; font-weight: 700; color: var(--red); letter-spacing: 0.01em; line-height: 1; }
+.hdr-logo-sub { font-family: Georgia, serif; font-size: 11px; font-weight: 400; color: var(--text); letter-spacing: 0.18em; text-transform: uppercase; line-height: 1; margin-top: 4px; }
+.hdr-tagline { font-size: 9px; color: var(--dim); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
+.hdr-badge { display: flex; align-items: center; font-size: 10px; font-weight: 700; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ── HERO ────────────────────────────────────────────────────── */
+.hero { flex: 1; background: var(--white); padding: 60px 56px 52px; display: flex; flex-direction: column; align-items: flex-start; }
+.hero-inner { max-width: 780px; width: 100%; }
+.hero-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; }
+.hero-title { font-family: Georgia, serif; font-size: clamp(32px, 4.5vw, 52px); font-weight: 700; color: var(--text); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 6px; }
+.hero-title em { font-style: italic; color: var(--red); font-weight: 700; }
+.rule-block { width: 48px; height: 3px; background: var(--red); margin: 18px 0 22px; }
+.hero-sub { font-family: Georgia, serif; font-size: 17px; color: var(--mid); line-height: 1.72; max-width: 640px; font-style: italic; margin-bottom: 32px; }
+.hero-note { font-size: 12px; font-weight: 400; color: var(--dim); line-height: 1.7; font-family: Arial, sans-serif; }
+
+/* ── ECONOMIST SUMMARY BOX ───────────────────────────────────── */
+.sum-box { border: 1px solid var(--border); padding: 24px 24px; margin-bottom: 36px; background: var(--cream); max-width: 640px; }
+.sum-box-title { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.sum-box-item { display: flex; gap: 10px; font-size: 13px; color: var(--text); padding: 6px 0; border-bottom: 1px solid var(--border); font-family: Arial, sans-serif; line-height: 1.5; }
+.sum-box-item:last-child { border-bottom: none; }
+.sum-bullet { color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+/* ── STEPS ───────────────────────────────────────────────────── */
+.steps-econ { display: flex; gap: 0; border: 1px solid var(--border); margin-bottom: 32px; max-width: 560px; }
+.step-econ { flex: 1; padding: 16px 18px; border-right: 1px solid var(--border); }
+.step-econ:last-child { border-right: none; }
+.step-econ-n { font-size: 22px; font-weight: 700; color: var(--red); font-family: Georgia, serif; line-height: 1; margin-bottom: 4px; }
+.step-econ-t { font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+.step-econ-s { font-size: 11px; color: var(--dim); font-family: Arial, sans-serif; }
+
+/* ── BUTTON ──────────────────────────────────────────────────── */
+.btn { display: inline-flex; align-items: center; gap: 10px; background: var(--red); color: var(--white); font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 28px; border: none; cursor: pointer; transition: background 0.2s; }
+.btn:hover { background: var(--red-d); }
+.btn-outline { background: var(--white); border: 1.5px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--red); color: var(--red); background: var(--white); }
+.btn-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+/* ── DOMAIN CARDS ─────────────────────────────────────────────── */
+.domains { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); margin-bottom: 32px; max-width: 640px; }
+.domain-card { padding: 18px 20px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.domain-card:nth-child(2n) { border-right: none; }
+.domain-card:nth-last-child(-n+2) { border-bottom: none; }
+.domain-card-n { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.domain-card h4 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; font-family: Georgia, serif; }
+.domain-card p { font-size: 12px; color: var(--mid); line-height: 1.6; font-family: Arial, sans-serif; }
+
+/* ── QUESTION SCREEN ──────────────────────────────────────────── */
+.q-wrap { flex: 1; background: var(--cream); display: flex; flex-direction: column; }
+.q-hdr { background: var(--white); padding: 12px 56px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.q-hdr-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.q-dots { display: flex; gap: 5px; }
+.q-dot { width: 28px; height: 4px; background: var(--border); transition: background 0.3s; }
+.q-dot.done { background: var(--red); }
+.q-dot.current { background: #D48080; }
+
+.q-body { flex: 1; padding: 48px 56px; max-width: 900px; width: 100%; }
+.q-domain { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+.q-num { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--light); text-transform: uppercase; margin-bottom: 18px; }
+.q-text { font-family: Georgia, serif; font-size: clamp(19px, 2.2vw, 25px); font-weight: 700; color: var(--text); line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 12px; }
+.q-scene { font-family: Georgia, serif; font-size: 14px; font-style: italic; color: var(--mid); line-height: 1.75; margin-bottom: 28px; padding: 16px 20px; border-left: 3px solid var(--red); background: var(--white); }
+
+.options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
+.opt { display: flex; align-items: flex-start; gap: 0; background: var(--white); border: 1px solid var(--border); cursor: pointer; transition: border-color 0.15s; }
+.opt:hover { border-color: var(--red); }
+.opt.selected { border-color: var(--red); border-width: 2px; }
+.opt-letter { width: 44px; min-height: 54px; display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--white); background: var(--border); flex-shrink: 0; letter-spacing: 0.08em; transition: background 0.15s; }
+.opt.selected .opt-letter { background: var(--red); }
+.opt-text { font-size: 14px; color: var(--text); line-height: 1.6; padding: 14px 18px; font-family: Arial, sans-serif; }
+
+.q-footer { display: flex; align-items: center; justify-content: space-between; }
+.q-foot-note { font-size: 11px; color: var(--light); font-family: Arial, sans-serif; font-style: italic; }
+
+/* ── COMPLETE BANNER ──────────────────────────────────────────── */
+.complete-banner { background: var(--red); padding: 12px 56px; display: flex; align-items: center; gap: 14px; }
+.complete-banner p { font-size: 12px; font-weight: 700; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; font-family: Arial, sans-serif; }
+
+/* ── RESULTS ──────────────────────────────────────────────────── */
+.results-body { background: var(--cream); }
+.results-hdr { background: var(--white); border-bottom: 1px solid var(--border); padding: 40px 56px 36px; }
+.res-kicker { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+.res-title { font-family: Georgia, serif; font-size: clamp(24px,3.5vw,38px); font-weight: 700; color: var(--text); line-height: 1.08; margin-bottom: 6px; }
+.res-sub { font-size: 13px; color: var(--dim); font-family: Arial, sans-serif; }
+
+.res-content { padding: 36px 56px; max-width: 1060px; }
+
+.score-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--border); margin-bottom: 28px; background: var(--white); }
+.score-cell { padding: 24px 22px; border-right: 1px solid var(--border); }
+.score-cell:last-child { border-right: none; }
+.score-cell-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; font-family: Arial, sans-serif; }
+.score-cell-num { font-family: Georgia, serif; font-size: 48px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.score-cell-num sub { font-size: 0.4em; color: var(--light); font-weight: 400; vertical-align: super; }
+.score-cell-desc { font-size: 12px; color: var(--mid); font-family: Arial, sans-serif; }
+
+.verdict { background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--red); padding: 24px 24px; margin-bottom: 24px; }
+.verdict-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; font-family: Arial, sans-serif; }
+.verdict-title { font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.verdict-text { font-family: Georgia, serif; font-size: 14px; color: var(--mid); line-height: 1.75; font-style: italic; }
+
+.res-section { margin-bottom: 28px; }
+.res-section-hd { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--red); font-family: Arial, sans-serif; display: flex; align-items: center; gap: 8px; }
+
+.q-result { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.q-result:last-child { border-bottom: none; }
+.q-res-tick { font-size: 14px; font-weight: 700; flex-shrink: 0; width: 22px; }
+.q-res-domain { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; font-family: Arial, sans-serif; }
+.q-res-note { font-size: 12px; color: var(--mid); line-height: 1.6; font-family: Georgia, serif; font-style: italic; }
+
+.dim-table { background: var(--white); border: 1px solid var(--border); }
+.dim-row-r { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.dim-row-r:last-child { border-bottom: none; }
+.dim-row-name { font-size: 13px; font-weight: 700; color: var(--text); flex-basis: 230px; flex-shrink: 0; font-family: Arial, sans-serif; }
+.dim-bar-w { flex: 1; height: 5px; background: var(--border); }
+.dim-bar-f { height: 100%; transition: width 0.8s ease; }
+.dim-score-n { font-size: 13px; font-weight: 700; color: var(--text); flex-shrink: 0; min-width: 38px; text-align: right; font-family: Georgia, serif; }
+.dim-verdict-l { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0; min-width: 90px; text-align: right; font-family: Arial, sans-serif; }
+
+.sg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.sg-box { background: var(--white); border: 1px solid var(--border); padding: 20px 20px; }
+.sg-box-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); font-family: Arial, sans-serif; }
+.sg-item { display: flex; gap: 10px; font-size: 13px; color: var(--text); padding: 6px 0; border-bottom: 1px solid var(--border); line-height: 1.5; font-family: Arial, sans-serif; }
+.sg-item:last-child { border-bottom: none; }
+
+.dev-box { background: var(--white); border: 1px solid var(--border); padding: 0; margin-bottom: 28px; }
+.dev-item-r { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+.dev-item-r:last-child { border-bottom: none; }
+.dev-n-r { width: 48px; min-height: 72px; display: flex; align-items: flex-start; justify-content: center; padding-top: 18px; font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: var(--red); border-right: 1px solid var(--border); flex-shrink: 0; }
+.dev-content { padding: 16px 20px; }
+.dev-content h4 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+.dev-content p { font-size: 13px; color: var(--mid); line-height: 1.65; font-family: Georgia, serif; font-style: italic; }
+
+.cta-box { background: var(--red); padding: 32px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.cta-box-text h3 { font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+.cta-box-text p { font-size: 13px; color: rgba(255,255,255,0.75); font-family: Arial, sans-serif; }
+.btn-white { background: var(--white); color: var(--red); }
+.btn-white:hover { background: var(--cream); }
+
+.restart-bar { padding: 20px 56px; border-top: 1px solid var(--border); background: var(--white); }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ SCREEN 1: MASTER INTRO ═══ -->
+<div class="screen active" id="screen-master">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo">
+      <div class="hdr-logo-main">The Digital</div>
+      <div class="hdr-logo-sub">Board</div>
+      <div class="hdr-tagline">A brand &amp; advisory platform of Matrix Five Ltd</div>
+    </div>
+    <div class="hdr-badge">NED Readiness Assessment</div>
+  </div>
+  <div class="rule-thin"></div>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Digital Governance</div>
+      <h1 class="hero-title">Are you ready for a<br><em>Digital Board?</em></h1>
+      <div class="rule-block"></div>
+      <p class="hero-sub">A structured self-assessment for senior technology executives exploring their first mainstream Non-Executive Director appointment.</p>
+      <div class="sum-box">
+        <div class="sum-box-title">What this assessment covers</div>
+        <div class="sum-box-item"><span class="sum-bullet">&#8212;</span> <span><strong>Part One:</strong> Five governance scenarios testing your knowledge of boardroom accountability, fiduciary duty, audit and risk, and technology oversight.</span></div>
+        <div class="sum-box-item"><span class="sum-bullet">&#8212;</span> <span><strong>Part Two:</strong> Ten behavioural questions across five dimensions — strategic orientation, influence, challenge and support, independence, and boardroom communication.</span></div>
+        <div class="sum-box-item"><span class="sum-bullet">&#8212;</span> <span><strong>Full results:</strong> An honest readiness profile with scores, dimension analysis, strengths, gaps, and recommended development steps.</span></div>
+        <div class="sum-box-item"><span class="sum-bullet">&#8212;</span> No feedback is shown during the assessment. All results appear at the end.</div>
+      </div>
+      <div class="steps-econ">
+        <div class="step-econ"><div class="step-econ-n">1</div><div class="step-econ-t">Part One</div><div class="step-econ-s">Governance &middot; 5 questions</div></div>
+        <div class="step-econ"><div class="step-econ-n">2</div><div class="step-econ-t">Part Two</div><div class="step-econ-s">Behavioural &middot; 10 questions</div></div>
+        <div class="step-econ"><div class="step-econ-n">3</div><div class="step-econ-t">Results</div><div class="step-econ-s">Full analysis</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="show('screen-p1-intro')">Begin the assessment &#8594;</button>
+        <span class="hero-note">Approximately 20 minutes &nbsp;&middot;&nbsp; No right or wrong answers in Part Two</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 2: PART 1 INTRO ═══ -->
+<div class="screen" id="screen-p1-intro">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo">
+      <div class="hdr-logo-main">The Digital</div>
+      <div class="hdr-logo-sub">Board</div>
+    </div>
+    <div class="hdr-badge">Part One &mdash; Governance Knowledge</div>
+  </div>
+  <div class="rule-thin"></div>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Part One of Two</div>
+      <h2 class="hero-title">Governance knowledge<br>&amp; board judgement</h2>
+      <div class="rule-block"></div>
+      <p class="hero-sub">Five scenarios. Each presents a situation you are likely to encounter as a NED. Select the response that best reflects how an effective non-executive director should act. One answer is most correct.</p>
+      <div class="domains">
+        <div class="domain-card"><div class="domain-card-n">Domain 1</div><h4>Board dynamics &amp; role clarity</h4><p>The distinction between executive and non-executive responsibility.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Domain 2</div><h4>Audit, risk &amp; accountability</h4><p>Financial oversight, risk committees and external auditors.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Domain 3</div><h4>Fiduciary duty</h4><p>Acting in the interests of the company, not your own background.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Domain 4</div><h4>Technology oversight</h4><p>How a board-level technology perspective differs from an executive one.</p></div>
+        <div class="domain-card" style="grid-column:span 2;border-bottom:none"><div class="domain-card-n">Domain 5</div><h4>Governance under pressure</h4><p>How NEDs behave when governance conflicts with relationships, short-term performance or management preference.</p></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="startP1()">Begin Part One &#8594;</button>
+        <span class="hero-note">5 scenarios &nbsp;&middot;&nbsp; One correct answer &nbsp;&middot;&nbsp; ~10 minutes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 3: PART 1 QUESTIONS ═══ -->
+<div class="screen" id="screen-p1-q">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-logo-main">The Digital</div><div class="hdr-logo-sub">Board</div></div>
+    <div class="hdr-badge">Part One &mdash; <span id="p1-label">Question 1 of 5</span></div>
+  </div>
+  <div class="rule-thin"></div>
+  <div class="q-wrap">
+    <div class="q-hdr">
+      <div class="q-hdr-label">Part One &nbsp;&middot;&nbsp; Governance Scenarios</div>
+      <div class="q-dots" id="p1-dots"></div>
+    </div>
+    <div class="q-body">
+      <div class="q-domain" id="p1-domain"></div>
+      <div class="q-num" id="p1-qnum"></div>
+      <div class="q-text" id="p1-qtext"></div>
+      <div class="q-scene" id="p1-scene"></div>
+      <div class="options" id="p1-options"></div>
+      <div class="q-footer">
+        <div class="q-foot-note">Your answer is recorded but not revealed until the full results.</div>
+        <button class="btn" id="p1-next-btn" onclick="p1Next()" style="display:none">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 4: PART 2 INTRO ═══ -->
+<div class="screen" id="screen-p2-intro">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-logo-main">The Digital</div><div class="hdr-logo-sub">Board</div></div>
+    <div class="hdr-badge">Part Two &mdash; Behavioural Profile</div>
+  </div>
+  <div class="complete-banner">&#10003; &nbsp; Part One complete &nbsp;&middot;&nbsp; Your governance responses have been recorded</div>
+  <div class="hero" style="padding-top:40px">
+    <div class="hero-inner">
+      <div class="hero-kicker">Part Two of Two</div>
+      <h2 class="hero-title">Behavioural profile<br>&amp; board instinct</h2>
+      <div class="rule-block"></div>
+      <p class="hero-sub">Ten questions about how you think, influence and behave. There are no right or wrong answers. Answer as you are — not as you think a NED should be.</p>
+      <div class="domains">
+        <div class="domain-card"><div class="domain-card-n">Dimension 1</div><h4>Strategic vs operational orientation</h4><p>Whether your instinct is to ask the strategic question or solve the operational problem.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Dimension 2</div><h4>Influence without authority</h4><p>How you shape outcomes when you have no direct power to implement.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Dimension 3</div><h4>Challenge and support balance</h4><p>How you hold management to account while remaining a constructive voice.</p></div>
+        <div class="domain-card"><div class="domain-card-n">Dimension 4</div><h4>Independence &amp; judgement</h4><p>Whether you maintain an independent view when relationships or pressure push the other way.</p></div>
+        <div class="domain-card" style="grid-column:span 2;border-bottom:none"><div class="domain-card-n">Dimension 5</div><h4>Boardroom communication</h4><p>How you translate complex technical expertise into strategic language that resonates with a generalist board.</p></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="startP2()">Begin Part Two &#8594;</button>
+        <span class="hero-note">10 questions &nbsp;&middot;&nbsp; No correct answers &nbsp;&middot;&nbsp; ~10 minutes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 5: PART 2 QUESTIONS ═══ -->
+<div class="screen" id="screen-p2-q">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-logo-main">The Digital</div><div class="hdr-logo-sub">Board</div></div>
+    <div class="hdr-badge">Part Two &mdash; <span id="p2-label">Question 1 of 10</span></div>
+  </div>
+  <div class="rule-thin"></div>
+  <div class="q-wrap">
+    <div class="q-hdr">
+      <div class="q-hdr-label">Part Two &nbsp;&middot;&nbsp; Behavioural Profile</div>
+      <div class="q-dots" id="p2-dots"></div>
+    </div>
+    <div class="q-body">
+      <div class="q-domain" id="p2-domain"></div>
+      <div class="q-num" id="p2-qnum"></div>
+      <div class="q-text" id="p2-qtext"></div>
+      <div id="p2-options-wrap"></div>
+      <div class="q-footer">
+        <div class="q-foot-note">Answer honestly. There is no right answer.</div>
+        <button class="btn" id="p2-next-btn" onclick="p2Next()" style="display:none">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 6: RESULTS ═══ -->
+<div class="screen" id="screen-final">
+  <div class="rule-top"></div>
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-logo-main">The Digital</div><div class="hdr-logo-sub">Board</div></div>
+    <div class="hdr-badge">Your Results</div>
+  </div>
+  <div class="rule-thin"></div>
+  <div class="results-body">
+    <div class="results-hdr">
+      <div class="res-kicker">NED Board Readiness Assessment &mdash; Full Results</div>
+      <div class="res-title">Your board readiness profile</div>
+      <div class="res-sub">Based on 15 questions across governance knowledge and behavioural profile</div>
+    </div>
+    <div class="res-content" id="results-content"></div>
+  </div>
+  <div class="restart-bar">
+    <button class="btn btn-outline" onclick="restartAll()">&#8592; &nbsp;Start again</button>
+  </div>
+</div>
+
+<script>
+const P1_QUESTIONS = [{"domain": "Domain 1 — Board dynamics & role clarity", "text": "The executive team presents a transformational technology strategy. You have significant reservations about delivery risk. What is the most effective action for a NED?", "scene": "The CEO is clearly committed to the programme. Several executive directors have already endorsed it. The board meeting moves quickly. You are the only voice in the room with deep technology experience.", "options": [{"letter": "A", "text": "Use your technical expertise to provide detailed analysis of the delivery risks, proposing specific mitigations and amendments to the plan."}, {"letter": "B", "text": "Ask the executive team to articulate how they have stress-tested delivery risk, and what the board would see if assumptions prove incorrect."}, {"letter": "C", "text": "Raise your reservations privately with the CEO after the meeting to avoid undermining them in front of the board."}, {"letter": "D", "text": "Support the strategy in principle and note your reservations in the minutes, ensuring they are recorded without blocking progress."}], "correct": 1, "rationale": "A NED's role is to ask the right questions, not to solve the problem. Option B surfaces the concern constructively and holds management to account without crossing into executive territory."}, {"domain": "Domain 2 — Audit, risk & accountability", "text": "As a member of the Audit Committee, you receive the external auditor's report the evening before the meeting. It contains a significant finding about a control weakness. What do you do?", "scene": "The CFO has emailed to say the finding is being addressed and will be resolved before year-end. The Audit Committee Chair has not flagged it as a material agenda item.", "options": [{"letter": "A", "text": "Accept the CFO's assurance and trust that the matter will be resolved. Raise it briefly at the meeting to confirm the timeline."}, {"letter": "B", "text": "Contact the Audit Committee Chair immediately to ensure the finding is given appropriate time on the agenda, and seek clarification from the external auditor directly if needed."}, {"letter": "C", "text": "Raise it at the start of the meeting yourself, before the Chair has a chance to move on, to ensure it is heard."}, {"letter": "D", "text": "Document your concern in writing to the Company Secretary in advance of the meeting, ensuring your position is formally recorded."}], "correct": 1, "rationale": "The Audit Committee Chair is the right first call. Escalating through proper channels ensures the finding gets the airtime it requires without undermining the Chair or acting unilaterally."}, {"domain": "Domain 3 — Fiduciary duty", "text": "You are a NED on the board of a company that is considering acquiring a business where your former employer is the vendor's adviser. How do you handle this?", "scene": "You have no financial interest in the outcome. You believe you can be objective. The deal is strategically important and your sector knowledge would be valuable to the board's assessment.", "options": [{"letter": "A", "text": "Declare the connection at the start of the relevant board discussion and rely on the board to judge whether you can participate."}, {"letter": "B", "text": "Disclose the connection to the Chair in advance, seek legal or governance advice if uncertain, and withdraw from the relevant discussion and vote if there is any reasonable question about your independence."}, {"letter": "C", "text": "Contribute fully to the discussion — your connection is indirect and your objectivity is not genuinely compromised."}, {"letter": "D", "text": "Abstain from the vote but remain in the discussion to offer your technical expertise on the target."}], "correct": 1, "rationale": "Proactive disclosure to the Chair, followed by taking governance advice and withdrawing if there is doubt, is the only defensible approach. Perceived conflicts matter as much as real ones."}, {"domain": "Domain 4 — Technology oversight at board level", "text": "The board is being asked to approve a major cloud migration programme. Several fellow NEDs clearly lack the technical literacy to evaluate the proposal. What is your role?", "scene": "The executive team's presentation is technically detailed and has left the non-technical directors uncertain. The CEO is keen to proceed. There is time pressure from a contract deadline.", "options": [{"letter": "A", "text": "Provide a technical evaluation of the proposal on behalf of the board, translating the key risks and assumptions into terms your fellow directors can assess."}, {"letter": "B", "text": "Recommend the board engages an independent technical adviser before approving a commitment of this scale, and frame the questions the board should be able to answer before proceeding."}, {"letter": "C", "text": "Vote in favour — you understand the proposal and believe it is sound. The time pressure is real and your expertise gives the board sufficient cover."}, {"letter": "D", "text": "Ask the CEO to defer the decision until a board education session on cloud migration can be arranged."}], "correct": 1, "rationale": "A NED's job is to ensure the board can govern effectively, not to substitute for independent scrutiny. Option B protects the board's ability to make an informed decision without overstepping or blocking progress unnecessarily."}, {"domain": "Domain 5 — Governance under pressure", "text": "During a board discussion, it becomes clear that a significant regulatory breach may have occurred six months ago. The CEO says the matter was contained internally and has been resolved. What do you do?", "scene": "The CEO is someone you respect and have worked well with. Other NEDs appear willing to accept the explanation. The company is in a sensitive period ahead of a fundraising round.", "options": [{"letter": "A", "text": "Accept the CEO's explanation — they have managed the business through difficult situations before and you trust their judgement on what required disclosure."}, {"letter": "B", "text": "Request that the Company Secretary and legal counsel confirm in writing whether the breach required regulatory notification, and that the board formally minute its review of the matter."}, {"letter": "C", "text": "Raise the matter privately with the Chair after the meeting so as not to create tension in the room during a sensitive period."}, {"letter": "D", "text": "Note your concern in the minutes and request a follow-up paper from management at the next meeting detailing what happened and why it was not escalated to the board."}], "correct": 1, "rationale": "A potential regulatory breach requires formal legal confirmation, not management assurance. The board's duty is to governance, not to the fundraising timeline or to protecting the CEO's position."}];
+const P2_QUESTIONS = [{"domain": "Dimension 1 — Strategic vs operational orientation", "text": "You are presented with a complex operational problem in your area of expertise. Your instinctive response is to:", "options": [{"letter": "A", "text": "Start working through the problem — you can see how to solve it and the organisation will benefit from your experience.", "dim": 1, "score": 1}, {"letter": "B", "text": "Ask whether solving this operational problem is the right use of your time in this role, and whether the executive team has the right resources to address it.", "dim": 1, "score": 5}, {"letter": "C", "text": "Share your perspective on the problem clearly, then step back and let the executive team determine the solution.", "dim": 1, "score": 3}, {"letter": "D", "text": "Offer to connect the team with someone from your network who has solved a similar problem.", "dim": 1, "score": 3}]}, {"domain": "Dimension 2 — Influence without authority", "text": "You believe the board is moving toward a decision you think is wrong. You have already raised your concern once and it was not well received. What do you do next?", "options": [{"letter": "A", "text": "Raise it again in the meeting — if the concern is genuine, it is your duty to keep voicing it until it is heard.", "dim": 2, "score": 3}, {"letter": "B", "text": "Accept the direction of travel. You have made your point. The board has the right to make decisions you disagree with.", "dim": 2, "score": 2}, {"letter": "C", "text": "Seek a private conversation with the Chair to understand whether your concern has genuinely been considered, and whether there is information you are missing.", "dim": 2, "score": 5}, {"letter": "D", "text": "Frame your concern differently in the meeting — find a new angle or evidence base that might land better with the room.", "dim": 2, "score": 4}]}, {"domain": "Dimension 3 — Challenge and support balance", "text": "The CEO you work with is talented but consistently over-optimistic in their forecasts. This is the third quarter in a row where targets have been missed. What is your approach?", "options": [{"letter": "A", "text": "Raise a formal concern in the Remuneration Committee about whether performance targets are being set and assessed appropriately.", "dim": 3, "score": 4}, {"letter": "B", "text": "Have a direct private conversation with the CEO — you respect them, but this pattern needs to be named and addressed before the board loses confidence.", "dim": 3, "score": 5}, {"letter": "C", "text": "Ask the board to commission an independent review of the forecasting process and the assumptions behind it.", "dim": 3, "score": 3}, {"letter": "D", "text": "Continue to support the CEO publicly while noting the trend privately in board discussions.", "dim": 3, "score": 2}]}, {"domain": "Dimension 4 — Independence & judgement", "text": "You were introduced to this board by the CEO, with whom you have a strong relationship. On a key vote, your independent assessment leads you to a different conclusion from theirs. How do you vote?", "options": [{"letter": "A", "text": "Vote according to your independent assessment. The relationship is important but your fiduciary duty comes first.", "dim": 4, "score": 5}, {"letter": "B", "text": "Abstain — you have a conflict of loyalty that makes it inappropriate for you to vote either way.", "dim": 4, "score": 2}, {"letter": "C", "text": "Vote with the CEO this time, but make it clear privately that you cannot always be expected to.", "dim": 4, "score": 1}, {"letter": "D", "text": "Seek a further conversation with the CEO before the vote to see if there is information that changes your view.", "dim": 4, "score": 3}]}, {"domain": "Dimension 5 — Boardroom communication", "text": "You are about to present a complex technology risk finding to a generalist board. Most directors do not share your technical background. How do you approach it?", "options": [{"letter": "A", "text": "Provide the full technical detail — NEDs need to understand the substance of what they are governing.", "dim": 5, "score": 1}, {"letter": "B", "text": "Lead with the business consequence and the decision the board needs to make, then offer to go deeper only if the board wants to.", "dim": 5, "score": 5}, {"letter": "C", "text": "Prepare two versions — a summary for the board and a technical appendix for those who want it.", "dim": 5, "score": 4}, {"letter": "D", "text": "Ask a fellow NED with less technical background to review your paper in advance and flag anything that needs clearer explanation.", "dim": 5, "score": 4}]}, {"domain": "Dimension 1 — Strategic vs operational orientation", "text": "When you look back on your executive career, your most valued contributions have typically been:", "options": [{"letter": "A", "text": "Solving problems others could not solve — your technical depth and execution capability were your differentiators.", "dim": 1, "score": 2}, {"letter": "B", "text": "Building and developing teams that could solve problems without needing you in the room.", "dim": 1, "score": 4}, {"letter": "C", "text": "Translating complex challenges into strategic choices that the leadership team could act on.", "dim": 1, "score": 5}, {"letter": "D", "text": "Delivering major programmes on time and on budget — your track record of execution is your calling card.", "dim": 1, "score": 2}]}, {"domain": "Dimension 3 — Challenge and support balance", "text": "A member of the executive team presents a plan you believe contains a significant flaw. The Chair appears satisfied. In the moment, you:", "options": [{"letter": "A", "text": "Raise the flaw directly and clearly, even if it means extending the meeting or creating tension in the room.", "dim": 3, "score": 4}, {"letter": "B", "text": "Ask a clarifying question that surfaces the flaw without stating it explicitly — let the executive team identify it themselves.", "dim": 3, "score": 5}, {"letter": "C", "text": "Note it for the minutes but allow the meeting to conclude — you can address it in the follow-up.", "dim": 3, "score": 2}, {"letter": "D", "text": "Speak to the Chair privately after the meeting before deciding whether to escalate.", "dim": 3, "score": 3}]}, {"domain": "Dimension 2 — Influence without authority", "text": "You have strong views on the strategic direction the company should take, but the executive team is not receptive. Over time, your most effective approach tends to be:", "options": [{"letter": "A", "text": "Persist. Consistent, evidence-based advocacy eventually shifts the room.", "dim": 2, "score": 3}, {"letter": "B", "text": "Find allies. Understanding who else shares your view and building informal alignment is how things change.", "dim": 2, "score": 4}, {"letter": "C", "text": "Reframe. The same argument rarely works twice — you look for the angle that resonates with each audience.", "dim": 2, "score": 5}, {"letter": "D", "text": "Step back. If the executive team is not persuaded, they may have information or context you do not.", "dim": 2, "score": 3}]}, {"domain": "Dimension 4 — Independence & judgement", "text": "You discover informally that a fellow NED has a potential conflict of interest they have not disclosed. You:", "options": [{"letter": "A", "text": "Raise it with the Chair privately — governance responsibilities require the Chair to address it, not you.", "dim": 4, "score": 5}, {"letter": "B", "text": "Ask the NED directly in a private conversation — give them the opportunity to deal with it themselves before escalating.", "dim": 4, "score": 4}, {"letter": "C", "text": "Monitor the situation. It may not be material, and acting prematurely could damage the relationship unnecessarily.", "dim": 4, "score": 1}, {"letter": "D", "text": "Raise it at the next board meeting — governance matters should be addressed in the right forum.", "dim": 4, "score": 2}]}, {"domain": "Dimension 5 — Boardroom communication", "text": "In a board discussion, a fellow non-executive challenges you on a point where you know you are right. Your instinctive response is to:", "options": [{"letter": "A", "text": "Make your case more clearly and directly — you are confident in your position and the board deserves the correct view.", "dim": 5, "score": 2}, {"letter": "B", "text": "Acknowledge their point, explain where you agree and disagree, and invite the board to weigh both perspectives.", "dim": 5, "score": 5}, {"letter": "C", "text": "Ask what information or experience is driving their view before responding — you may be missing something.", "dim": 5, "score": 5}, {"letter": "D", "text": "Let it go in the moment. Boardroom relationships matter and this point is not worth the friction.", "dim": 5, "score": 1}]}];
+
+/* ── STATE ──────────────────────────────────────────────────── */
+var p1Answers=[], p1Score=0, p1CurrentQ=0, p1Selected=null;
+var p2Answers=[], p2CurrentQ=0, p2Selected=null;
+
+/* ── UTILS ──────────────────────────────────────────────────── */
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el=document.getElementById(id);
+  if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+}
+
+function buildDots(cid,total,cur){
+  var c=document.getElementById(cid); if(!c)return;
+  c.innerHTML='';
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div');
+    d.className='q-dot'+(i<cur?' done':i===cur?' current':'');
+    c.appendChild(d);
+  }
+}
+
+/* ── PART 1 ──────────────────────────────────────────────────── */
+function startP1(){p1CurrentQ=0;p1Answers=[];p1Score=0;show('screen-p1-q');renderP1();}
+
+function renderP1(){
+  var q=P1_QUESTIONS[p1CurrentQ];
+  p1Selected=null;
+  document.getElementById('p1-domain').textContent=q.domain;
+  document.getElementById('p1-qnum').textContent='Question '+(p1CurrentQ+1)+' of '+P1_QUESTIONS.length;
+  document.getElementById('p1-label').textContent='Question '+(p1CurrentQ+1)+' of '+P1_QUESTIONS.length;
+  document.getElementById('p1-qtext').textContent=q.text;
+  document.getElementById('p1-scene').textContent=q.scene;
+  document.getElementById('p1-next-btn').style.display='none';
+  buildDots('p1-dots',P1_QUESTIONS.length,p1CurrentQ);
+  var opts=document.getElementById('p1-options');
+  opts.innerHTML='';
+  q.options.forEach(function(o,i){
+    var div=document.createElement('div');
+    div.className='opt';
+    div.innerHTML='<div class="opt-letter">'+o.letter+'</div><div class="opt-text">'+o.text+'</div>';
+    div.addEventListener('click',function(){selectP1(i);});
+    opts.appendChild(div);
+  });
+}
+
+function selectP1(i){
+  p1Selected=i;
+  document.querySelectorAll('#p1-options .opt').forEach(function(el,idx){el.classList.toggle('selected',idx===i);});
+  document.getElementById('p1-next-btn').style.display='inline-flex';
+}
+
+function p1Next(){
+  if(p1Selected===null)return;
+  var q=P1_QUESTIONS[p1CurrentQ];
+  p1Answers.push(p1Selected);
+  if(p1Selected===q.correct)p1Score++;
+  p1CurrentQ++;
+  if(p1CurrentQ<P1_QUESTIONS.length){renderP1();}else{show('screen-p2-intro');}
+}
+
+/* ── PART 2 ──────────────────────────────────────────────────── */
+function startP2(){p2CurrentQ=0;p2Answers=[];show('screen-p2-q');renderP2();}
+
+function renderP2(){
+  var q=P2_QUESTIONS[p2CurrentQ];
+  p2Selected=null;
+  document.getElementById('p2-domain').textContent=q.domain;
+  document.getElementById('p2-qnum').textContent='Question '+(p2CurrentQ+1)+' of '+P2_QUESTIONS.length;
+  document.getElementById('p2-label').textContent='Question '+(p2CurrentQ+1)+' of '+P2_QUESTIONS.length;
+  document.getElementById('p2-qtext').textContent=q.text;
+  document.getElementById('p2-next-btn').style.display='none';
+  buildDots('p2-dots',P2_QUESTIONS.length,p2CurrentQ);
+  var wrap=document.getElementById('p2-options-wrap');
+  wrap.innerHTML='';
+  var opts=document.createElement('div');
+  opts.className='options';
+  q.options.forEach(function(o,i){
+    var div=document.createElement('div');
+    div.className='opt';
+    div.innerHTML='<div class="opt-letter">'+o.letter+'</div><div class="opt-text">'+o.text+'</div>';
+    div.addEventListener('click',function(){selectP2(i);});
+    opts.appendChild(div);
+  });
+  wrap.appendChild(opts);
+}
+
+function selectP2(i){
+  p2Selected=i;
+  document.querySelectorAll('#p2-options-wrap .opt').forEach(function(el,idx){el.classList.toggle('selected',idx===i);});
+  document.getElementById('p2-next-btn').style.display='inline-flex';
+}
+
+function p2Next(){
+  if(p2Selected===null)return;
+  var q=P2_QUESTIONS[p2CurrentQ];
+  p2Answers.push({dim:q.options[p2Selected].dim,score:q.options[p2Selected].score});
+  p2CurrentQ++;
+  if(p2CurrentQ<P2_QUESTIONS.length){renderP2();}else{buildResults();show('screen-final');}
+}
+
+/* ── RESULTS ─────────────────────────────────────────────────── */
+function buildResults(){
+  var govPct=Math.round((p1Score/P1_QUESTIONS.length)*100);
+  var dimScores={1:[],2:[],3:[],4:[],5:[]};
+  p2Answers.forEach(function(a){dimScores[a.dim].push(a.score);});
+  var dimAvg={};
+  [1,2,3,4,5].forEach(function(d){
+    var arr=dimScores[d];
+    dimAvg[d]=arr.length?Math.round((arr.reduce(function(a,b){return a+b;},0)/arr.length)*20):0;
+  });
+  var behav=Math.round(Object.values(dimAvg).reduce(function(a,b){return a+b;},0)/5);
+  var overall=Math.round((govPct*0.45)+(behav*0.55));
+
+  var verdict,vTitle,vText;
+  if(overall>=75){
+    verdict="Board Ready";
+    vTitle="You have the profile of a credible NED candidate.";
+    vText="Your governance knowledge is strong and your behavioural instincts align well with effective non-executive contribution. The evidence suggests you are ready to pursue a mainstream board appointment with confidence. The focus now is on positioning — articulating your technology expertise in governance terms, identifying the right sectors and organisations, and building the relationships that lead to introductions.";
+  }else if(overall>=55){
+    verdict="Approaching Ready";
+    vTitle="You have a strong foundation — with targeted development, a first NED role is realistic.";
+    vText="There are real strengths here, and the gaps are specific rather than fundamental. Most can be addressed through board observer roles, governance education, and deliberate practice in translating your executive experience into non-executive language. The question is not whether you are capable — it is whether the profile you present today is the one a nominations committee will find compelling.";
+  }else{
+    verdict="In Development";
+    vTitle="The instincts are there — the framing and preparation need more work.";
+    vText="A NED role is a different operating model from any executive position, and the transition requires deliberate preparation rather than accumulated seniority. Your technology expertise is genuinely valuable at board level — but the way you deploy it, the questions you ask, and the role you play need to shift considerably. With the right support, a first appointment is achievable within 12 to 24 months.";
+  }
+
+  var dimNames={1:"Strategic orientation",2:"Influence without authority",3:"Challenge and support",4:"Independence and judgement",5:"Boardroom communication"};
+
+  function barColor(s){return s>=75?"#2D6A4F":s>=55?"#B01C1C":"#AAAAAA";}
+  function vLabel(s){return s>=75?"Strong":s>=55?"Developing":"Gap";}
+  function vLabelColor(s){return s>=75?"#2D6A4F":s>=55?"#B01C1C":"#7A7570";}
+
+  // Strengths and gaps
+  var strengths=[],gaps=[];
+  if(p1Score>=4)strengths.push("Strong governance knowledge and board protocol awareness");
+  else if(p1Score<=2)gaps.push("Governance fundamentals need deeper development");
+  [1,2,3,4,5].forEach(function(d){
+    var s=dimAvg[d],name=dimNames[d];
+    if(s>=75)strengths.push(name+" — strong profile across this dimension");
+    else if(s<55)gaps.push(name+" — instincts may be more executive than non-executive in nature");
+  });
+
+  // Dev items
+  var DEV=[
+    [p1Score<4,"Board governance education","A structured programme covering directors duties, committee structures, FRC guidance and practical board dynamics. The ICSA and Financial Times NED programme are credible starting points."],
+    [dimAvg[1]<65,"Strategic vs operational discipline","The shift from doing to asking requires deliberate practice. Board observer positions, mentoring from experienced NEDs and structured reflection on where you default to operational instincts will build this over time."],
+    [dimAvg[2]<65,"Influencing without authority","Shadowing experienced NEDs in committee settings, and practising the reframing of your views as questions, will sharpen this. The goal is to shape outcomes through the quality of your challenge, not the force of your authority."],
+    [dimAvg[4]<65,"Independence under pressure","Review recent situations where relationships, loyalty or momentum influenced your judgement. Build a clear personal framework for what constitutes a genuine conflict and how you would handle it."],
+    [dimAvg[5]<65,"Board-level communication","Practise presenting complex technology findings to generalist audiences. The translation from expert to strategist is a skill that can be developed."],
+  ];
+  var devItems=DEV.filter(function(d){return d[0];});
+  if(devItems.length===0)devItems.push([true,"Positioning and network development","Your profile is ready. The focus now is on who knows you, what they know you for, and whether your biography communicates your governance value rather than your executive track record."]);
+
+  var html='';
+
+  // Score row
+  html+='<div class="score-row">';
+  html+='<div class="score-cell"><div class="score-cell-label">Overall readiness</div><div class="score-cell-num">'+overall+'<sub>%</sub></div><div class="score-cell-desc">'+verdict+'</div></div>';
+  html+='<div class="score-cell"><div class="score-cell-label">Governance knowledge</div><div class="score-cell-num">'+p1Score+'<sub>/'+P1_QUESTIONS.length+'</sub></div><div class="score-cell-desc">'+govPct+'% correct</div></div>';
+  html+='<div class="score-cell"><div class="score-cell-label">Behavioural profile</div><div class="score-cell-num">'+behav+'<sub>%</sub></div><div class="score-cell-desc">Across 5 dimensions</div></div>';
+  html+='</div>';
+
+  // Verdict
+  html+='<div class="verdict"><div class="verdict-label">Overall verdict &mdash; '+verdict+'</div><div class="verdict-title">'+vTitle+'</div><div class="verdict-text">'+vText+'</div></div>';
+
+  // Governance detail
+  html+='<div class="res-section"><div class="res-section-hd"><span>Part One &mdash; Governance knowledge</span></div>';
+  P1_QUESTIONS.forEach(function(q,i){
+    var correct=p1Answers[i]===q.correct;
+    html+='<div class="q-result">';
+    html+='<div class="q-res-tick" style="color:'+(correct?"#2D6A4F":"#B01C1C")+'">'+(correct?"&#10003;":"&#10007;")+'</div>';
+    html+='<div><div class="q-res-domain">'+q.domain.split(" \u2014 ")[1]+'</div>';
+    html+='<div class="q-res-note">'+(correct?"You identified the most effective non-executive response.":q.rationale)+'</div></div>';
+    html+='</div>';
+  });
+  html+='</div>';
+
+  // Behavioural dimensions
+  html+='<div class="res-section"><div class="res-section-hd">Part Two &mdash; Behavioural dimensions</div>';
+  html+='<div class="dim-table">';
+  [1,2,3,4,5].forEach(function(d){
+    var s=dimAvg[d];
+    html+='<div class="dim-row-r">';
+    html+='<div class="dim-row-name">'+dimNames[d]+'</div>';
+    html+='<div class="dim-bar-w"><div class="dim-bar-f" style="width:'+s+'%;background:'+barColor(s)+'"></div></div>';
+    html+='<div class="dim-score-n">'+s+'%</div>';
+    html+='<div class="dim-verdict-l" style="color:'+vLabelColor(s)+'">'+vLabel(s)+'</div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+
+  // Strengths and gaps
+  html+='<div class="sg-grid">';
+  html+='<div class="sg-box"><div class="sg-box-label" style="color:#2D6A4F">Strengths</div>';
+  (strengths.length?strengths:["Continue to build on all dimensions"]).forEach(function(s){
+    html+='<div class="sg-item"><span style="color:#2D6A4F;font-weight:700">&#10003;</span>'+s+'</div>';
+  });
+  html+='</div>';
+  html+='<div class="sg-box"><div class="sg-box-label" style="color:#B01C1C">Development priorities</div>';
+  (gaps.length?gaps:["No significant gaps identified"]).forEach(function(g){
+    html+='<div class="sg-item"><span style="color:#B01C1C;font-weight:700">&#9679;</span>'+g+'</div>';
+  });
+  html+='</div></div>';
+
+  // Dev steps
+  html+='<div class="res-section"><div class="res-section-hd">Recommended next steps</div>';
+  html+='<div class="dev-box">';
+  devItems.forEach(function(item,i){
+    html+='<div class="dev-item-r"><div class="dev-n-r">'+(i+1)+'</div><div class="dev-content"><h4>'+item[1]+'</h4><p>'+item[2]+'</p></div></div>';
+  });
+  html+='</div></div>';
+
+  // CTA
+  html+='<div class="cta-box">';
+  html+='<div class="cta-box-text"><h3>Ready to go further?</h3><p>The Digital Board works with senior technology executives to accelerate their path to a first mainstream board appointment.</p></div>';
+  html+='<div class="btn-row"><button class="btn btn-white" onclick="openTDB()">Visit The Digital Board &#8594;</button><button class="btn" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3)" onclick="restartAll()">Retake the assessment</button></div>';
+  html+='</div>';
+
+  document.getElementById('results-content').innerHTML=html;
+}
+
+function openTDB(){window.open("https://thedigitalboard.co.uk","_blank");}
+
+function restartAll(){
+  p1Answers=[];p1Score=0;p1CurrentQ=0;p1Selected=null;
+  p2Answers=[];p2CurrentQ=0;p2Selected=null;
+  document.getElementById('results-content').innerHTML='';
+  show('screen-master');
+}
+
+show('screen-master');
+
+</script>
+</body>
+</html>
