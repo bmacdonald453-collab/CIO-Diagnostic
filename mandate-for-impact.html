@@ -1560,6 +1560,26 @@ body.appendix-open{
   font-size:clamp(42px,5.5vw,74px)!important;
 }
 
+
+/* Updated team bios and modal scroll */
+.team-bio-card{
+  max-height:76vh!important;
+  overflow-y:auto!important;
+}
+.team-bio-card::-webkit-scrollbar{width:8px}
+.team-bio-card::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+.team-bio-card::-webkit-scrollbar-thumb{background:rgba(196,85,58,.65);border-radius:10px}
+.team-bio-copy p{
+  font-size:14.5px!important;
+  line-height:1.72!important;
+}
+.team-redesign-grid{
+  grid-template-columns:1.15fr 1fr 1fr!important;
+}
+.team-featured{grid-row:span 2!important}
+.team-person h3{font-size:27px!important}
+.team-featured h3{font-size:34px!important}
+
 </style>
 </head>
 <body>
@@ -1766,10 +1786,10 @@ body.appendix-open{
           <div class="team-avatar">TR</div>
           <div>
             <h3>Toby Eduardo Redshaw</h3>
-            <div class="team-role">Former Global CIO · Verizon</div>
+            <div class="team-role">Former Global CIO · AMEX, Aviva & FedEx</div>
           </div>
         </div>
-        <p class="team-summary">Brings transformation credibility, operator judgement and a sharp lens on where enterprise technology leadership really succeeds or fails.</p>
+        <p class="team-summary">Brings global CIO, P&L, innovation, board and venture-backed advisory experience across enterprise-scale transformation.</p>
         <div class="team-more">View full bio →</div>
       </button>
 
@@ -1778,10 +1798,10 @@ body.appendix-open{
           <div class="team-avatar">DB</div>
           <div>
             <h3>David Bickerton</h3>
-            <div class="team-role">Former Global CIO · Centrica</div>
+            <div class="team-role">Former Group CIO · Centrica & Micro Focus</div>
           </div>
         </div>
-        <p class="team-summary">Adds deep enterprise experience across operating model, transformation and the practical realities of mandate fit, delivery and executive expectation.</p>
+        <p class="team-summary">Adds deep experience in ERP, operating model, cyber, supplier strategy and complex enterprise transformation.</p>
         <div class="team-more">View full bio →</div>
       </button>
 
@@ -1793,7 +1813,19 @@ body.appendix-open{
             <div class="team-role">Former Global CIO · UniCredit</div>
           </div>
         </div>
-        <p class="team-summary">Brings board-facing credibility in global financial services, especially around stakeholder alignment, enterprise complexity and leadership readiness.</p>
+        <p class="team-summary">Brings deep financial-services transformation experience across global, regulated and board-facing environments.</p>
+        <div class="team-more">View full bio →</div>
+      </button>
+
+      <button class="team-person" data-bio="benedetto" type="button">
+        <div class="team-top">
+          <div class="team-avatar">BC</div>
+          <div>
+            <h3>Benedetto Conversano</h3>
+            <div class="team-role">Former Group CIO · Diageo</div>
+          </div>
+        </div>
+        <p class="team-summary">Adds global CIO, transformation and board-advisory experience across complex, multicultural enterprise environments.</p>
         <div class="team-more">View full bio →</div>
       </button>
     </div>
@@ -7900,30 +7932,47 @@ const teamBios = {
     ]
   },
   toby: {
-    name: "Toby Eduardo Redshaw",
-    role: "Former Global CIO · Verizon",
+    name: "Toby Redshaw",
+    role: "Former Global CIO, American Express, Aviva and FedEx · Former SVP Enterprise Innovation & 5G Solutions, Verizon",
     text: [
-      "Toby is a global technology and business executive with experience leading large-scale digitalisation and transformation across multiple sectors. His executive career includes senior global technology leadership roles at Verizon, as well as prior leadership positions across major international organisations.",
-      "He brings a rare combination of operator credibility, commercial range and practical judgement on what world-class technology leadership actually looks like when the stakes are high and the enterprise context is complex.",
-      "Within Agency Three, Toby helps pressure-test the mandate, assess candidates as a true peer and challenge the realities of landing, sponsorship and execution."
+      "Toby Redshaw is one of the few technology leaders globally to have led enterprise-wide digital and business transformation at scale across multiple major organisations.",
+      "His career spans senior technology, innovation and operating leadership roles at FedEx, Motorola, Aviva, American Express and Verizon. He has led global technology organisations of up to 13,500 people, overseen multi-billion-dollar technology budgets, held eight board seats and worked extensively with boards on AI, future technology and pragmatic strategy.",
+      "At Verizon, Toby led the company’s first 5G technology strategy and execution agenda, created the world’s first 5G global incubators and co-innovation hubs, and ran major AI, product development, location services and XR businesses.",
+      "Alongside his executive career, Toby has built a substantial board and advisory portfolio across enterprise technology, AI, cybersecurity, data, health innovation, defence technology, immersive learning and venture-backed growth companies. His current and recent roles include Board Director and Strategic Advisor at VANTIQ, advisory roles with organisations including GAI Insights, Datalytica, Arqit, Ocient, Dreamscape Immersive and the Council on Competitiveness, as well as pro bono advisory work with academic, science and public-impact institutions.",
+      "Within Agency Three, Toby brings deep operating judgement on what enterprise technology leadership really requires: transformation credibility, commercial impact, innovation discipline, board fluency and the ability to execute at global scale."
     ]
   },
   david: {
     name: "David Bickerton",
-    role: "Former Global CIO · Centrica",
+    role: "Former Group CIO, Centrica · Former Group CIO, Micro Focus",
     text: [
-      "David has held senior global technology leadership roles across large, complex enterprises, including serving as Group CIO at Centrica and previously holding senior leadership positions at Micro Focus and other major organisations.",
-      "His experience spans operating model design, enterprise transformation, commercial prioritisation and the challenge of translating technology leadership into wider business outcomes.",
-      "At Agency Three, David brings a practical, board-relevant perspective on mandate fit, organisational readiness and what strong leadership looks like in the real operating environment."
+      "David Bickerton is an accomplished technology and transformation leader with deep experience operating as both a Group CIO and senior general manager across large, complex enterprise environments.",
+      "His career spans senior leadership roles at Centrica, Micro Focus, DXC Technology, Hewlett Packard Enterprise, Fujitsu and ICL, with experience across energy, technology, consumer products, aerospace and defence, financial services, retail and the public sector.",
+      "David has led major digital, ERP and enterprise platform transformations, including the completion of Micro Focus’s Enterprise Platform Transformation and large-scale change programmes involving process simplification, automation, new operating models, supplier strategy, delivery model redesign and cost optimisation.",
+      "Earlier in his career, David served as Group CIO of Centrica, CIO of British Gas and Applications Director, giving him first-hand experience of technology leadership in a highly regulated, operationally complex and customer-critical environment.",
+      "Alongside his executive career, David now advises CXOs and digital leaders on technology strategy, complex ERP transformation, cyber and compliance maturity, operating model design, organisational change and strategic partnerships.",
+      "Within Agency Three, David brings practical operating judgement on what it takes to deliver complex transformation in real enterprise conditions: mandate clarity, execution discipline, supplier and operating model maturity, cost control, organisational readiness and the ability to turn technology strategy into measurable business performance."
     ]
   },
   joanna: {
     name: "Joanna Pamphilis",
-    role: "Former Global CIO · UniCredit",
+    role: "Former Global CIO, UniCredit · Former Non-Executive Board Director, State Street Fund Services Ireland",
     text: [
-      "Joanna is a senior international technology executive whose career includes serving as Global CIO at UniCredit, alongside earlier leadership roles across complex global financial services and enterprise environments.",
-      "She brings strong experience in large-scale transformation, stakeholder management and navigating the intersection between board priorities, regulatory context and enterprise execution.",
-      "Within Agency Three, Joanna adds valuable perspective on stakeholder alignment, leadership maturity and the practical realities of succeeding in politically and operationally complex organisations."
+      "Joanna Pamphilis is a senior global technology and transformation leader with more than 25 years’ experience leading complex change across financial services.",
+      "Her career spans senior executive roles at UniCredit, State Street, KCG Holdings, Northern Trust Asset Management, UBS and Cambridge Technology Partners, with leadership experience across Europe, the UK, North America and Asia.",
+      "At UniCredit, Joanna served as CIO and Global Head of Investments and Securities Digital Products, as well as Managing Director and Member of the Management Board of UniCredit Services GmbH. She has led large-scale, multi-country technology transformations in complex financial environments, bringing together strategy, leadership and execution to translate ambition into measurable outcomes.",
+      "Earlier in her career, Joanna held senior technology, COO and transformation roles across capital markets, asset management and trading environments, including COO Technology EMEA at State Street, COO Global Equities Trading at KCG and Global Head of Trade Execution Technology at Northern Trust Asset Management.",
+      "Alongside her executive career, Joanna has served as a Non-Executive Board Director for State Street Fund Services Ireland and now advises senior executives and boards through JP Global Consulting. Her work focuses on strategic IT and transformation advisory, fractional CIO support, board-level sparring, executive coaching and helping organisations industrialise initiatives so they deliver sustainable business outcomes.",
+      "Within Agency Three, Joanna brings deep judgement on what technology leadership requires in complex, regulated and international environments: strategic clarity, stakeholder trust, operational discipline, leadership maturity and the ability to turn transformation ambition into measurable enterprise impact."
+    ]
+  },
+  benedetto: {
+    name: "Benedetto Conversano",
+    role: "Former Group CIO, Diageo · NED, Advisor, Speaker and Entrepreneur",
+    text: [
+      "Benedetto Conversano is a senior technology and digital transformation leader whose career includes serving as Group CIO at Diageo, alongside broader experience as a NED, adviser, speaker and entrepreneur.",
+      "He brings deep experience across blue-chip organisations, advisory boards and multicultural environments, with a strong understanding of how technology leadership connects to business transformation, stakeholder alignment and enterprise impact.",
+      "Within Agency Three, Benedetto adds perspective on global technology leadership, board-level advisory work and the practical realities of leading transformation across complex international organisations."
     ]
   }
 };
